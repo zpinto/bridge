@@ -6,6 +6,8 @@ from blacklist import BLACKLIST
 from db import db
 
 from resources.user import UserRegister, User, UserLogin, UserLogout, TokenRefresh
+from resources.applicant import SubmitApplication
+from resources.recruiter import PostJob, RecruiterJobPostingList, ApplicantList
 
 # create the app instance
 app = Flask(__name__)
@@ -83,11 +85,20 @@ def revoked_token_callback():
     )
 
 
+# user authentication
 api.add_resource(UserRegister, "/register")
 api.add_resource(User, "/user/<string:username>")
 api.add_resource(UserLogin, "/login")
 api.add_resource(TokenRefresh, "/refresh")
 api.add_resource(UserLogout, "/logout")
+
+# applicant endpoints
+api.add_resource(SubmitApplication, "/apply")
+
+# recruiter endpoints
+api.add_resource(PostJob, "/post")
+api.add_resource(RecruiterJobPostingList, "/recruiterposts")
+api.add_resource(ApplicantList, "/applicantlist/<string:job_post_id>")
 
 if __name__ == "__main__":
     app.run(port=5000, debug=True)
