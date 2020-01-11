@@ -1,3 +1,5 @@
+import traceback
+
 from flask_restful import Resource, reqparse
 from flask_jwt_extended import (
     jwt_required,
@@ -8,68 +10,66 @@ from flask_jwt_extended import (
 from db import db, collection_names
 
 # /my_application_list
+
+
 class ApplicantApplications(Resource):
     _req_parser = reqparse.RequestParser()
     _req_parser.add_argument(
-        "user_id", type = str, required = True 
+        "previous_doc", type=dict
     )
-    _req_parser.add_argument(
-        "previous_doc", type = dict
-    )
-    
+
     @jwt_required
-    def get(self){
+    def get(self):
         data = ApplicantApplications._req_parser.parse_args()
 
         try:
-            user_applications = db.collection(collection_names["JOB APPLICATION"])
-                                  .where("user_id", "==", data["user_id"])
-                                  .limit(to: 10)
-                                  .start(after: data["previous_doc"])
+            user_applications = db.collection(
+                collection_names["JOB_APPLICATIONS"]).where("user_id", "==", get_jwt_identity()).start(data["previous_doc"]).limit(10)
 
-            return {"applications" : [application.to_dict() for application in user_applications]}, 200
+            return {"applications": {application.id: application.to_dict() for application in user_applications}}, 200
 
         except:
+            traceback.print_exc()
             return {"message": "Error fetching applications"}, 500
-    }
-    
 
 
 class ReviewByApplicant(Resource):
     _req_parser = reqparse.RequestParser()
     _req_parser.add_argument(
-        "decision", type = int
+        "app_id", type=str, required=True
     )
     _req_parser.add_argument(
-        "previous_doc", type = dict
+        "decision", type=int
+    )
+    _req_parser.add_argument(
+        "previous_doc", type=dict
     )
 
     # /get_application
+    @jwt_required
     def get(self):
         data = ReviewByApplicant._req_parser.parse_args()
 
         try:
-            job_applications = db.collection(collection_names["JOB_APPLICATIONS"])
-                                 .get()
-                                 .limit(to: 1)
-                                 .start(after: data["previous_doc"])
-            return {"applications": [app for app in job_applications]}, 200
+            job_applications = db.collection(
+                collection_names["JOB_APPLICATIONS"]).get().limit(1).start(data["previous_doc"])
+            return {"applications": {app.id: app.to_dict() for app in job_applications}}, 200
 
         except:
             return {"message": "Failed to get applications"}, 500
 
-
     # /review_application
+    @jwt_required
     def post(self):
         data = ReviewByApplicant._req_parser.parse_args()
 
         try:
-            doc_ref = db.collection(collection_names["JOB_APPLICATIONS"]) # needs to get by app id
+            # needs to get by app id
+            doc_ref = db.collection(collection_names["JOB_APPLICATIONS"])
             new_value = doc_ref.to_dict()
             # yes == 1, no == -1
             new_value["_score"] += data["decision"]
             doc_ref.set(new_value)
-
 
             return {"message": "Successfully reviewed application"}, 200
 
@@ -80,15 +80,16 @@ class ReviewByApplicant(Resource):
 # /job_posts
 class JobPostList(Resource):
 
-    # @jwt_required
-    def get(self, job_type: str):
-        job_posts_collection = db.collection(collection_names["JOB_POSTS"])
+    @jwt_required
+    def get(self, job_type):
 
-        # For more memory efficient way
-        # https://cloud.google.com/firestore/docs/query-data/query-cursors
-        jobs_of_job_type = job_posts_collection.where(
-            "job_type", "==", job_type).stream()
-        return {"Posts": [doc.to_dict() for doc in docs]}, 200
+        try:
+            job_posts_re = db.collection(collection_names["JOB_POSTS"])
+            job_posts = db.collection(
+                collection_names["JOB_APPLICATIONS"]).get()
+            return {"posts": {job_posts.id: job_posts.to_dict() for doc in docs}}, 200
+        except:
+            return {"message": "There was an error looking up the job list"}
 
 
 # /apply
@@ -101,7 +102,6 @@ class SubmitApplication(Resource):
         "job_post_id", type=str, required=True
     )
 
-    # TODO: check to make sure that they are recruiter
     @jwt_required
     def post(self):
         data = SubmitApplication._app_parser.parse_args()
