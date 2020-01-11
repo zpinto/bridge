@@ -2,7 +2,7 @@ import Axios from "axios";
 
 import Config from "../Config.json";
 
-const { baseURL, EPs } = Config;
+const { baseURL } = Config;
 
 const client = Axios.create({
     baseURL: baseURL,
