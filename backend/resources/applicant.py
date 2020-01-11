@@ -27,11 +27,9 @@ class ApplicantApplications(Resource):
             cursor = user_applications.order_by("job_post_id")
 
             if data["previous_doc"]:
-                cursor = cursor.start_after(data["previous_doc"]).limit(1).stream()
-
-            else:
-                cursor = cursor.limit(1).stream()
-
+                cursor = cursor.start_after(data["previous_doc"])
+            
+            cursor = cursor.limit(5).stream()
             return {"applications": {application.id : application.to_dict() for application in cursor}}, 200
 
         except:
@@ -42,7 +40,7 @@ class ApplicantApplications(Resource):
 class ReviewByApplicant(Resource):
     _req_parser = reqparse.RequestParser()
     _req_parser.add_argument(
-        "app_id", type=str, required=True
+        "app_id", type=str
     )
     _req_parser.add_argument(
         "decision", type=int
@@ -57,12 +55,20 @@ class ReviewByApplicant(Resource):
         data = ReviewByApplicant._req_parser.parse_args()
 
         try:
-            job_applications = db.collection(
-                collection_names["JOB_APPLICATIONS"]).get().limit(1).start(data["previous_doc"])
-            return {"applications": {app.id: app.to_dict() for app in job_applications}}, 200
+            job_applications = db.collection(collection_names["JOB_APPLICATIONS"]).order_by("job_id")
+
+            if data["previous_doc"]:
+                job_applications = job_applications.start_after(data["previous_doc"])
+
+            job_applications = job_applications.limit(1).stream()
+
+            # I assumed this takes care of null case
+            job_app = {app.id: app.to_dict() for app in job_applications}
+            return {"application": job_app}, 200
 
         except:
             return {"message": "Failed to get applications"}, 500
+
 
     # /review_application
     @jwt_required
@@ -71,8 +77,9 @@ class ReviewByApplicant(Resource):
 
         try:
             # needs to get by app id
-            doc_ref = db.collection(collection_names["JOB_APPLICATIONS"])
+            doc_ref = db.collection(collection_names["JOB_APPLICATIONS"]).document(data["app_id"])
             new_value = doc_ref.to_dict()
+
             # yes == 1, no == -1
             new_value["_score"] += data["decision"]
             doc_ref.set(new_value)
@@ -85,15 +92,31 @@ class ReviewByApplicant(Resource):
 
 # /job_posts
 class JobPostList(Resource):
+    
+    _req_parser = RequestParser()
+    _req_parser.add_argument(
+        "previous_doc", type=dict
+    )
 
     @jwt_required
     def get(self, job_type):
+        data = JobPostList._req_parser.parse_args()
 
         try:
-            job_posts_re = db.collection(collection_names["JOB_POSTS"])
-            job_posts = db.collection(
-                collection_names["JOB_APPLICATIONS"]).get()
-            return {"posts": {job_posts.id: job_posts.to_dict() for doc in docs}}, 200
+            job_posts = db.collection(collection_names["JOB_POSTS"]).order_by("job_type")
+
+            if data["previous_doc"]:
+                job_posts = job_posts.start_after(data["previous_doc"])
+            
+            job_posts = job_posts.limit(10).stream()
+            job_posts = {post.id: post.to_dict()) for post in job_posts}
+
+            for i in job_posts.keys():
+                if job_posts[i]["job_type"] != job_type:
+                    del job_posts[i]
+
+            return {"posts": job_posts}, 200
+
         except:
             return {"message": "There was an error looking up the job list"}
 

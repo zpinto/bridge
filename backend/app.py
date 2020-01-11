@@ -6,7 +6,7 @@ from blacklist import BLACKLIST
 from db import db
 
 from resources.user import UserRegister, User, UserLogin, UserLogout, TokenRefresh
-from resources.applicant import SubmitApplication, ApplicantApplications
+from resources.applicant import JobPostList, SubmitApplication, ApplicantApplications, ReviewByApplicant
 from resources.recruiter import PostJob, RecruiterJobPostingList, ApplicantList, ReviewByRecruiter
 
 # create the app instance
@@ -93,8 +93,14 @@ api.add_resource(TokenRefresh, "/refresh")
 api.add_resource(UserLogout, "/logout")
 
 # applicant endpoints
+api.add_resource(JobPostList, "/job_posts")
 api.add_resource(SubmitApplication, "/apply")
 api.add_resource(ApplicantApplications, "/myapplist")
+api.add_resource(ReviewByApplicant, "/get_app")
+api.add_resource(ReviewByApplicant, "/review_app")
+# api.add_resource()
+# api.add_resource()
+
 
 # recruiter endpoints
 api.add_resource(PostJob, "/post")
