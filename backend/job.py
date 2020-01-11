@@ -2,7 +2,8 @@ class JobApplication:
     def __init__(self, resume_id, job_post_id, user_id):
         self._resume_id = resume_id
         self._job_post_id = job_post_id
-        self._user_id = user_id  
+        self._user_id = user_id
+        self._score = 0
 
     def to_dict(self):
         return {"resume_id": self._resume_id,

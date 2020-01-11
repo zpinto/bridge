@@ -7,8 +7,7 @@ app = Flask(__name__)
 @app.route('/')
 def test():
     db.create("test", "doc", {"hello":"World"})
-    print(db.read("test", "hello").to_dict())
-    print(db.read("test", "doc").to_dict())
+    print(type(db.read("test", "doc")))
 
     return "Hello World"
 
