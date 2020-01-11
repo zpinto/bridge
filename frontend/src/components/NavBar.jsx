@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
 
 const NavBar = props => {
   const classes = useStyles();
-  const { loggedIn } = props;
+  const { user, handleLogout } = props;
 
   return (
     <div className={classes.root}>
@@ -36,10 +36,8 @@ const NavBar = props => {
             LOGO
           </IconButton>
           <div className={classes.toolbarButtons}>
-            <Link href="/about" color="inherit">
-              About Us
-            </Link>
-            {loggedIn && <Button color="inherit">Log Out</Button>}
+            <Button href="/about" color="inherit">About Us</Button>
+            {user && <Button color="inherit" onClick={handleLogout}>Log Out</Button>}
           </div>
         </Toolbar>
       </AppBar>

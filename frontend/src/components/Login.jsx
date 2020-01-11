@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
@@ -28,8 +28,18 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function Login() {
+const Login = props => {
   const classes = useStyles();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const { handleLogin } = props;
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    handleLogin(email, password);
+  }
 
   return (
     <Container component="main" maxWidth="xs">
@@ -47,7 +57,11 @@ export default function Login() {
           <Typography component="h1" variant="h5">
             Login
           </Typography>
-          <form className={classes.form} noValidate>
+          <form
+            className={classes.form}
+            noValidate
+            onSubmit={handleSubmit}
+          >
             <TextField
               variant="outlined"
               margin="normal"
@@ -58,6 +72,8 @@ export default function Login() {
               name="email"
               autoComplete="email"
               autoFocus
+              value={email}
+              onChange={e => setEmail(e.target.value)}
             />
             <TextField
               variant="outlined"
@@ -69,6 +85,8 @@ export default function Login() {
               type="password"
               id="password"
               autoComplete="current-password"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
             />
             <Button
               type="submit"
@@ -91,4 +109,6 @@ export default function Login() {
       </div>
     </Container>
   );
-}
+};
+
+export default Login;
