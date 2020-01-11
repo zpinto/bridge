@@ -186,6 +186,128 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "/apply",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt_token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"resume_id\": \";aldskjf;alsdk\",\n\t\"job_post_id\": \"dlkfja;sdlkj\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/apply",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"apply"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/post",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt_token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"title\": \"a job\",\n\t\"deadline\": \"today\",\n\t\"job_description\": \"chill\",\n\t\"company_description\": \"hella fun\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/post",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"post"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/recruiterposts",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/recruiterposts",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"recruiterposts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/applicantlist",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/applicantlist",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"applicantlist"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"protocolProfileBehavior": {}
