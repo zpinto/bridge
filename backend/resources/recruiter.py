@@ -68,7 +68,7 @@ class ApplicantList(Resource):
         try:
             applicants = db.collection(collection_names['JOB_APPLICATIONS']).where(
                 "job_post_id", "==", job_post_id).stream()
-            return {"posts": {applicant.id: applicant.to_dict() for applicant in applicants}}, 200
+            return {"applicants": {applicant.id: applicant.to_dict() for applicant in applicants}}, 200
         except:
             traceback.print_exc()
             return {"message": "Error fetching applicants"}
@@ -80,7 +80,6 @@ class ReviewByRecruiter(Resource):
         "decision", type=str, required=True
     )
 
-    # /get_application
     @jwt_required
     def get(self, app_id):
         try:
