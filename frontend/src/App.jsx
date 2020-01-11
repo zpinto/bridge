@@ -7,8 +7,11 @@ import Home from "./components/Home";
 import About from "./components/About";
 import Login from "./components/Login";
 import Register from "./components/Register";
+import JobPosting from "./components/JobPosting";
+
 
 import "./App.css";
+import JobDescriptionView from "./components/JobDecriptionView";
 
 const App = () => {
   const [loggedIn, toggleLogged] = useState(false);
@@ -20,6 +23,9 @@ const App = () => {
           <Route strict exact path="/" component={loggedIn ? Home : Login} />
           <Route exact path="/register" component={Register} />
           <Route exact path="/about" component={About} />
+          <Route exact path="/JobDescriptionView" component={JobDescriptionView} />
+          <Route exact path="/testDK" component={JobPosting}/>
+
           <Route exact path="/portal">
             <h1>Application Portal</h1>
             <h2>Applicant</h2>
