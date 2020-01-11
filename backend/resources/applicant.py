@@ -31,7 +31,7 @@ class ApplicantApplications(Resource):
                 cursor = cursor.start_after(data["previous_doc"])
 
             cursor = cursor.limit(5).stream()
-            return {"applications": {application.id: application.to_dict() for application in cursor}}, 200
+            return {"applications": {application.id for application in cursor}}, 200
 
         except:
             traceback.print_exc()
@@ -65,7 +65,7 @@ class ReviewByApplicant(Resource):
             job_applications = job_applications.limit(1).stream()
 
             # I assumed this takes care of null case
-            job_app = {app.id: app.to_dict() for app in job_applications}
+            job_app = {app.id for app in job_applications}
             return {"application": job_app}, 200
 
         except:
@@ -91,28 +91,14 @@ class ReviewByApplicant(Resource):
 # /job_posts
 class JobPostList(Resource):
 
-    _req_parser = RequestParser()
-    _req_parser.add_argument(
-        "previous_doc", type=dict
-    )
-
     @jwt_required
     def get(self, job_type):
         data = JobPostList._req_parser.parse_args()
 
         try:
             job_posts = db.collection(
-                collection_names["JOB_POSTS"]).order_by("job_type")
-
-            if data["previous_doc"]:
-                job_posts = job_posts.start_after(data["previous_doc"])
-
-            job_posts = job_posts.limit(10).stream()
-            job_posts = {post.id: post.to_dict()) for post in job_posts}
-
-            for i in job_posts.keys():
-                if job_posts[i]["job_type"] != job_type:
-                    del job_posts[i]
+                collection_names["JOB_POSTS"]).where("job_type", "==", job_type).stream()
+            job_posts = {post.id for post in job_posts}
 
             return {"posts": job_posts}, 200
 
