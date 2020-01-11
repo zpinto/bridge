@@ -197,6 +197,7 @@ BODY:
 "deadline":                 : String # required
 "job_description":          : String # required
 "company_description":      : String # required
+"job_type":                 : String # required
 
 RETURN:
 

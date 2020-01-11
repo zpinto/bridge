@@ -61,7 +61,8 @@ class UserRegister(Resource):
                     "password": data['password'],
                     "first_name": data['first_name'],
                     "last_name": data['last_name'],
-                    "user_type": data['user_type']
+                    "user_type": data['user_type'],
+                    "score": 0
                 })
             return {"message": "User created successfully."}, 201
         except:

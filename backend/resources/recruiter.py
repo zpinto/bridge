@@ -68,6 +68,7 @@ class ApplicantList(Resource):
         try:
             applicants = db.collection(collection_names['JOB_APPLICATIONS']).where(
                 "job_post_id", "==", job_post_id).stream()
+            # TODO: recalculate the score of the applicant based on users
             return {"applicants": {applicant.id: applicant.to_dict() for applicant in applicants}}, 200
         except:
             traceback.print_exc()
@@ -86,6 +87,7 @@ class ReviewByRecruiter(Resource):
             application_ref = db.collection(
                 collection_names['JOB_APPLICATIONS']).document(app_id)
             application = application_ref.get()
+            # TODO: recalculate the order of the applicants based on users new scores
             return application.to_dict(), 200
         except:
             traceback.print_exc()
@@ -100,6 +102,8 @@ class ReviewByRecruiter(Resource):
             application_ref = db.collection(
                 collection_names['JOB_APPLICATIONS']).document(app_id)
             application_ref.update({"decision": data['decision']})
+            # TODO: need to update all of the users in that rated that application
+
             return {"message": "Your selection was successful"}
         except:
             traceback.print_exc()

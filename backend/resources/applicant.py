@@ -23,16 +23,18 @@ class ApplicantApplications(Resource):
         data = ApplicantApplications._req_parser.parse_args()
 
         try:
-            user_applications = db.collection(collection_names["JOB_APPLICATIONS"]).where("applicant_username", "==", get_jwt_identity())
+            user_applications = db.collection(collection_names["JOB_APPLICATIONS"]).where(
+                "applicant_username", "==", get_jwt_identity())
             cursor = user_applications.order_by("job_post_id")
 
             if data["previous_doc"]:
-                cursor = cursor.start_after(data["previous_doc"]).limit(1).stream()
+                cursor = cursor.start_after(
+                    data["previous_doc"]).limit(1).stream()
 
             else:
                 cursor = cursor.limit(1).stream()
 
-            return {"applications": {application.id : application.to_dict() for application in cursor}}, 200
+            return {"applications": {application.id: application.to_dict() for application in cursor}}, 200
 
         except:
             traceback.print_exc()
@@ -51,7 +53,6 @@ class ReviewByApplicant(Resource):
         "previous_doc", type=dict
     )
 
-    # /get_application
     @jwt_required
     def get(self):
         data = ReviewByApplicant._req_parser.parse_args()
@@ -64,17 +65,17 @@ class ReviewByApplicant(Resource):
         except:
             return {"message": "Failed to get applications"}, 500
 
-    # /review_application
     @jwt_required
     def post(self):
         data = ReviewByApplicant._req_parser.parse_args()
 
         try:
             # needs to get by app id
-            doc_ref = db.collection(collection_names["JOB_APPLICATIONS"])
+            doc_ref = db.collection(
+                collection_names["JOB_APPLICATIONS"]).document(data['app_id'])
             new_value = doc_ref.to_dict()
-            # yes == 1, no == -1
-            new_value["_score"] += data["decision"]
+            new_value["yes"].append(
+                get_jwt_identity) if data['decision'] else new_value["no"].append(get_jwt_identity)
             doc_ref.set(new_value)
 
             return {"message": "Successfully reviewed application"}, 200
@@ -112,6 +113,8 @@ class SubmitApplication(Resource):
     def post(self):
         data = SubmitApplication._app_parser.parse_args()
         data['applicant_username'] = get_jwt_identity()
+        data['yes'] = []
+        data['no'] = []
 
         try:
             job_app = db.collection(

@@ -56,7 +56,7 @@ def missing_token_callback(error):
     return (
         jsonify(
             {
-                "description": "Request does not contain an access token.",
+                "message": "Request does not contain an access token.",
                 "error": "authorization_required",
             }
         ),
@@ -68,7 +68,7 @@ def missing_token_callback(error):
 def token_not_fresh_callback():
     return (
         jsonify(
-            {"description": "The token is not fresh.",
+            {"message": "The token is not fresh.",
                 "error": "fresh_token_required"}
         ),
         401,
@@ -79,7 +79,7 @@ def token_not_fresh_callback():
 def revoked_token_callback():
     return (
         jsonify(
-            {"description": "The token has been revoked.", "error": "token_revoked"}
+            {"message": "The token has been revoked.", "error": "token_revoked"}
         ),
         401,
     )
@@ -102,10 +102,11 @@ api.add_resource(RecruiterJobPostingList, "/recruiterposts")
 api.add_resource(ApplicantList, "/applicantlist/<string:job_post_id>")
 api.add_resource(ReviewByRecruiter, "/recruiterdecision/<string:app_id>")
 
+
 @app.route("/")
 def home():
     return "Hello world"
-    
+
 
 if __name__ == "__main__":
     app.run(port=5000, debug=True)
