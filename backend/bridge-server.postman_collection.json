@@ -19,7 +19,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"username\": \"zach\",\n\t\"password\": \"hello123\",\n\t\"user_type\": \"applicant\"\n}",
+					"raw": "{\n\t\"username\": \"zach\",\n\t\"password\": \"hello123\",\n\t\"first_name\": \"Zach\",\n\t\"last_name\": \"Pinto\",\n\t\"user_type\": \"applicant\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -206,7 +206,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"resume_id\": \";aldskjf;alsdk\",\n\t\"job_post_id\": \"dlkfja;sdlkj\"\n}",
+					"raw": "{\n\t\"resume_id\": \";aldskjf;alsdk\",\n\t\"job_post_id\": \"orNwcrCLPxaF5W5hTEmL\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -287,7 +287,7 @@
 			"response": []
 		},
 		{
-			"name": "/applicantlist",
+			"name": "/applicantlist/<job_post_id>",
 			"request": {
 				"method": "GET",
 				"header": [
@@ -305,6 +305,80 @@
 					"path": [
 						"applicantlist"
 					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/recruiterdecision/<app_id>",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/recruiterdecision/pFO5vveV3HeviLx4nw0y",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"recruiterdecision",
+						"pFO5vveV3HeviLx4nw0y"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/recruiterdecision/<app_id>",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt_token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"decision\": \"good\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/recruiterdecision/pFO5vveV3HeviLx4nw0y",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"recruiterdecision",
+						"pFO5vveV3HeviLx4nw0y"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/myapplist",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": ""
 				}
 			},
 			"response": []
