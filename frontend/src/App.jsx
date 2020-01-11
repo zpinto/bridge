@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import Cookies from "js-cookie";
+import Axios from "axios";
 
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
@@ -11,13 +13,30 @@ import Register from "./components/Register";
 import "./App.css";
 
 const App = () => {
-  const [loggedIn, toggleLogged] = useState(false);
+  const [user, changeUser] = useState(null);
+
+  function handleLogin(email, password) {
+    // TODO validate
+    changeUser(email);
+  }
+
+  function handleLogout() {
+    // TODO validate
+    changeUser(null);
+  }
+
   return (
     <Router>
       <div className="app">
-        <NavBar />
+        <NavBar user={user} handleLogout={handleLogout}/>
         <Switch>
-          <Route strict exact path="/" component={loggedIn ? Home : Login} />
+          <Route strict exact path="/">
+            {user ? (
+              <Home user={user} />
+            ) : (
+              <Login handleLogin={handleLogin} />
+            )}
+          </Route>
           <Route exact path="/register" component={Register} />
           <Route exact path="/about" component={About} />
           <Route exact path="/portal">

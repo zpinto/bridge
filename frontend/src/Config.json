@@ -2,7 +2,7 @@
   "baseUrl": "http://127.0.0.1:3000",
   "EPs": {
     "registerEP": "/register",
-    "userEP": "/user/<string:username>",
+    "userEP": "/user",
     "loginEP": "/login",
     "refreshEP": "/refresh",
     "logoutEP": "/logout",
