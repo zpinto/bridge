@@ -59,6 +59,8 @@ class UserRegister(Resource):
                 data['username']).set({
                     "username": data['username'],
                     "password": data['password'],
+                    "first_name": data['first_name'],
+                    "last_name": data['last_name'],
                     "user_type": data['user_type']
                 })
             return {"message": "User created successfully."}, 201
