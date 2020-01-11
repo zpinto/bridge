@@ -37,7 +37,7 @@ const useStyles = makeStyles(theme => ({
         <div className={classes.paper}>
             <Typography
             component="h1" 
-            varient="h4"
+            varient="h1"
             >
                 Input Job Information Below:
             </Typography>
@@ -60,10 +60,10 @@ const useStyles = makeStyles(theme => ({
                     margin="normal"
                     required
                     fullWidth
-                    id="Job Descript"
-                    label="Job Descript"
-                    name="Job Descript"
-                    autoComplete="Job Descript"
+                    id="Job Description"
+                    label="Job Description"
+                    name="Job Description"
+                    autoComplete="Job Description"
                     autoFocus
                 />
                 <p></p>
