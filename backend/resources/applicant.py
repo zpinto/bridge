@@ -23,10 +23,16 @@ class ApplicantApplications(Resource):
         data = ApplicantApplications._req_parser.parse_args()
 
         try:
-            user_applications = db.collection(
-                collection_names["JOB_APPLICATIONS"]).where("user_id", "==", get_jwt_identity()).start(data["previous_doc"]).limit(10)
+            user_applications = db.collection(collection_names["JOB_APPLICATIONS"]).where("applicant_username", "==", get_jwt_identity())
+            cursor = user_applications.order_by("job_post_id")
 
-            return {"applications": {application.id: application.to_dict() for application in user_applications}}, 200
+            if data["previous_doc"]:
+                cursor = cursor.start_after(data["previous_doc"]).limit(1).stream()
+
+            else:
+                cursor = cursor.limit(1).stream()
+
+            return {"applications": {application.id : application.to_dict() for application in cursor}}, 200
 
         except:
             traceback.print_exc()
