@@ -108,5 +108,10 @@ api.add_resource(RecruiterJobPostingList, "/recruiterposts")
 api.add_resource(ApplicantList, "/applicantlist/<string:job_post_id>")
 api.add_resource(ReviewByRecruiter, "/recruiterdecision/<string:app_id>")
 
+@app.route("/")
+def home():
+    return "Hello world"
+    
+
 if __name__ == "__main__":
     app.run(port=5000, debug=True)
