@@ -7,7 +7,7 @@ from db import db
 
 from resources.user import UserRegister, User, UserLogin, UserLogout, TokenRefresh
 from resources.applicant import SubmitApplication
-from resources.recruiter import PostJob, RecruiterJobPostingList, ApplicantList
+from resources.recruiter import PostJob, RecruiterJobPostingList, ApplicantList, ReviewByRecruiter
 
 # create the app instance
 app = Flask(__name__)
@@ -99,6 +99,7 @@ api.add_resource(SubmitApplication, "/apply")
 api.add_resource(PostJob, "/post")
 api.add_resource(RecruiterJobPostingList, "/recruiterposts")
 api.add_resource(ApplicantList, "/applicantlist/<string:job_post_id>")
+api.add_resource(ReviewByRecruiter, "/recruiterdecision/<string:app_id>")
 
 if __name__ == "__main__":
     app.run(port=5000, debug=True)

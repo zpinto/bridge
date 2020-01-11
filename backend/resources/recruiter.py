@@ -19,7 +19,7 @@ class RecruiterJobPostingList(Resource):
         try:
             job_posts = db.collection(collection_names['JOB_POSTS']).where(
                 "poster_username", "==", get_jwt_identity()).stream()
-            return {"posts": [job_post.to_dict() for job_post in job_posts]}, 200
+            return {"posts": {job_post.id: job_post.to_dict() for job_post in job_posts}}, 200
         except:
             traceback.print_exc()
             return {"message": "Error fetching postings"}
@@ -68,26 +68,40 @@ class ApplicantList(Resource):
         try:
             applicants = db.collection(collection_names['JOB_APPLICATIONS']).where(
                 "job_post_id", "==", job_post_id).stream()
-            return {"posts": [applicant.to_dict() for applicant in applicants]}, 200
+            return {"posts": {applicant.id: applicant.to_dict() for applicant in applicants}}, 200
         except:
             traceback.print_exc()
             return {"message": "Error fetching applicants"}
 
 
 class ReviewByRecruiter(Resource):
+    _review_parser = reqparse.RequestParser()
+    _review_parser.add_argument(
+        "decision", type=str, required=True
+    )
+
     # /get_application
     @jwt_required
     def get(self, app_id):
         try:
             application_ref = db.collection(
-                collection_names['JOB_APPLICATIONS']).document(add_id)
+                collection_names['JOB_APPLICATIONS']).document(app_id)
             application = application_ref.get()
-            return application, 200
+            return application.to_dict(), 200
         except:
             traceback.print_exc()
             return {"message": "Error fetching application"}
 
     # /review_applicant
-
+    @jwt_required
     def post(self, app_id):
-        pass
+        data = ReviewByRecruiter._review_parser.parse_args()
+
+        try:
+            application_ref = db.collection(
+                collection_names['JOB_APPLICATIONS']).document(app_id)
+            application_ref.update({"decision": data['decision']})
+            return {"message": "Your selection was successful"}
+        except:
+            traceback.print_exc()
+            return {"message": "Error making a decision on application"}
