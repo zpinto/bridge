@@ -8,23 +8,44 @@ import Content from "./Content";
 import "./App.css";
 
 const App = () => {
-  const [user, changeUser] = useState(null);
+  function checkLoggedIn() {
+    return (
+      Cookies.get("email") !== undefined
+      /*&&
+      Cookies.get("access_token") !== undefined &&
+      Cookies.get("refresh_token")
+*/
+    );
+  }
+
+  const [loggedIn, setLoggedIn] = useState(checkLoggedIn());
 
   function handleLogin(email, password) {
-    // TODO validate
-    changeUser(email);
+    const { common } = Axios.defaults.headers;
+
+    Cookies.set("email", email);
+
+    common["email"] = email;
+
+    setLoggedIn(true);
   }
 
   function handleLogout() {
-    // TODO validate
-    changeUser(null);
+    const { common } = Axios.defaults.headers;
+
+    Cookies.remove("email");
+
+    delete common["email"];
+
+    setLoggedIn(false);
+    window.location.replace("/");
   }
 
   return (
-      <div className="app">
-        <NavBar user={user} handleLogout={handleLogout}/>
-        <Content user={user} handleLogin={handleLogin} />
-      </div>
+    <div className="app">
+      <NavBar loggedIn={loggedIn} handleLogout={handleLogout} />
+      <Content loggedIn={loggedIn} handleLogin={handleLogin} />
+    </div>
   );
 };
 

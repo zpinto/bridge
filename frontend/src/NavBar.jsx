@@ -2,7 +2,6 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-import Link from "@material-ui/core/Link";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 
@@ -20,7 +19,7 @@ const useStyles = makeStyles(theme => ({
 
 const NavBar = props => {
   const classes = useStyles();
-  const { user, handleLogout } = props;
+  const { loggedIn, handleLogout } = props;
 
   return (
     <div className={classes.root}>
@@ -37,7 +36,7 @@ const NavBar = props => {
           </IconButton>
           <div className={classes.toolbarButtons}>
             <Button href="/about" color="inherit">About Us</Button>
-            {user && <Button color="inherit" onClick={handleLogout}>Log Out</Button>}
+            {loggedIn && <Button color="inherit" onClick={handleLogout}>Log Out</Button>}
           </div>
         </Toolbar>
       </AppBar>
