@@ -43,7 +43,6 @@ class PostJob(Resource):
         "company_description", type=str, required=True
     )
 
-    # TODO: check to make sure that they are recruiter
     @jwt_required
     def post(self):
         data = PostJob._post_parser.parse_args()
@@ -87,8 +86,28 @@ class ReviewByRecruiter(Resource):
             application_ref = db.collection(
                 collection_names['JOB_APPLICATIONS']).document(app_id)
             application = application_ref.get()
-            # TODO: recalculate the order of the applicants based on users new scores
-            return application.to_dict(), 200
+
+           score = 0
+
+            for username in application['yes']:
+                user_ref = db.collection(
+                    collection_names["USERS"]).document(username)
+
+                user = user_ref.get().to_dict()
+
+                score += 1 * (user['correct'] / user['score'])
+
+            for username in application['no']:
+                user_ref = db.collection(
+                    collection_names["USERS"]).document(username)
+
+                user = user_ref.get().to_dict()
+
+                score -= 1 * (user['correct'] / user['score'])
+
+            ret_application = application.to_dict()
+            ret_application['score'] = score
+            return ret_application, 200
         except:
             traceback.print_exc()
             return {"message": "Error fetching application"}
@@ -103,6 +122,30 @@ class ReviewByRecruiter(Resource):
                 collection_names['JOB_APPLICATIONS']).document(app_id)
             application_ref.update({"decision": data['decision']})
             # TODO: need to update all of the users in that rated that application
+            application = application_ref.get().to_dict()
+            for username in application['yes']:
+                user_ref = db.collection(
+                    collection_names["USERS"]).document(username)
+
+                user = user_ref.get().to_dict()
+
+                if data['decision'] == 'yes':
+                    user['correct'] += 1
+
+                user['review'] += 1
+                user_ref.set(user)
+
+            for username in application['no']:
+                user_ref = db.collection(
+                    collection_names["USERS"]).document(username)
+
+                user = user_ref.get().to_dict()
+
+                if data['decision'] == 'no':
+                    user['correct'] += 1
+
+                user['review'] += 1
+                user_ref.set(user)
 
             return {"message": "Your selection was successful"}
         except:

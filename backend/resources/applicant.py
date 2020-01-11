@@ -76,14 +76,12 @@ class ReviewByApplicant(Resource):
         data = ReviewByApplicant._req_parser.parse_args()
 
         try:
-            # needs to get by app id
             doc_ref = db.collection(
                 collection_names["JOB_APPLICATIONS"]).document(data['app_id'])
             new_value = doc_ref.to_dict()
             new_value["yes"].append(
                 get_jwt_identity) if data['decision'] else new_value["no"].append(get_jwt_identity)
             doc_ref.set(new_value)
-
             return {"message": "Successfully reviewed application"}, 200
 
         except:
