@@ -12,6 +12,7 @@ import SubmitApplication from "./components/SubmitApplication";
 //import PeerResumeReview from "./components/PeerResumeReview";
 import AllApplicationView from "./components/AllApplicationView";
 import AllApplicants from "./components/AllApplicants";
+import JobPostings from "./components/JobPostings";
 
 
 const Content = props => {
@@ -35,8 +36,9 @@ const Content = props => {
         <Route exact path="/SubmitApplication" component={SubmitApplication} />
         {/* <Route exact path="/PeerResumeReview" component={PeerResumeReview} /> */}
          <Route exact path="/AllApplicationView" component={AllApplicationView} /> 
-         <Route exact path="/AllApplicants" component={AllApplicants} /> 
-        <Route exact path="/portal">
+         <Route exact path="/AllApplicants" component={AllApplicants} />
+         <Route exact path="/JobPostings" component={JobPostings} />  
+         <Route exact path="/portal">
           <h1>Application Portal</h1>
           <h2>Applicant</h2>
         </Route>
