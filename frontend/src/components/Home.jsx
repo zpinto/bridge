@@ -13,6 +13,7 @@ import {
 
 import Idm from "../services/Idm";
 import Recruiter from "../services/Recruiter";
+import Applicant from "../services/Applicant";
 
 const HomeButtons = props => {
   const { type } = props;
@@ -101,25 +102,52 @@ function AppCard(props) {
 function ApplicantContent(props) {
   const { email } = props;
 
-  const numbers = [0, 1, 2, 3, 4, 5];
-  return (
+  const [apps, setApps] = useState(null);
+  console.log("RAMBO");
+
+  return apps ? (
     <Grid container spacing={3}>
-      {numbers.map((index, value) => (
+      {apps.map((index, value) => (
         <AppCard key={index} number={value} />
       ))}
     </Grid>
+  ) : (
+    <Typography>Loading...</Typography>
   );
 }
 
 function RecruiterContent(props) {
+  const [jobCount, setJobCount] = useState(0);
+  const [applicationCount, setApplicationCount] = useState(0);
   const { email } = props;
+
+  Recruiter.recruitersPosts()
+    .then(response => {
+      const { posts } = response.data;
+
+      setJobCount(posts.size());
+
+      Object.keys(posts).forEach(key => {
+        Recruiter.applicantList(key)
+          .then(response => {
+            setApplicationCount(applicationCount + response.data.size());
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      });
+    })
+    .catch(error => {
+      console.log(error);
+    });
+
   return (
     <div>
       <Typography component="h2" variant="h4" align="left">
-        Jobs Posted: 34
+        Jobs Posted: {jobCount}
       </Typography>
       <Typography component="h2" variant="h4" align="left">
-        Total Applications: 102
+        Total Applications: {applicationCount}
       </Typography>
     </div>
   );

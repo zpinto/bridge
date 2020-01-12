@@ -1,7 +1,13 @@
 import Socket from "../util/Socket";
-import { applicantEPs } from "../Config.json";
+import {
+  applicantEPs
+} from "../Config.json";
 
-const { applyEP, myapplistEP, reviewappEP } = applicantEPs;
+const {
+  applyEP,
+  myapplistEP,
+  reviewappEP
+} = applicantEPs;
 
 async function apply(resume_id, job_post_id) {
   const payload = {
@@ -17,7 +23,7 @@ async function myAppList() {
 }
 
 async function getAppToReview() {
-  return await Socket.GET(reviewEP);
+  return await Socket.GET(reviewappEP);
 }
 
 async function reviewApp(decision, app_id) {
