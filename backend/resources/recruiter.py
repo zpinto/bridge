@@ -65,7 +65,34 @@ class ApplicantList(Resource):
             applicants = db.collection(collection_names['JOB_APPLICATIONS']).where(
                 "job_post_id", "==", job_post_id).stream()
             # TODO: recalculate the score of the applicant based on users
-            return {"applicants": {applicant.id: applicant.to_dict() for applicant in applicants}}, 200
+
+            applicants_score = []
+
+            for applicant in applicants:
+                application = applicant.to_dict()
+                score = 0
+
+                for username in application['yes']:
+                    user_ref = db.collection(
+                        collection_names["USERS"]).document(username)
+
+                    user = user_ref.get().to_dict()
+
+                    score += 1 * (user['correct'] / user['score'])
+
+                for username in application['no']:
+                    user_ref = db.collection(
+                        collection_names["USERS"]).document(username)
+
+                    user = user_ref.get().to_dict()
+
+                    score -= 1 * (user['correct'] / user['score'])
+
+                application['score'] = score
+                application['id'] = application[score]
+                applicants_score.append(application)
+
+            return {"applicants": sort(applicants, key=Ket)}, 200
         except:
             traceback.print_exc()
             return {"message": "Error fetching applicants"}
@@ -92,7 +119,7 @@ class ReviewByRecruiter(Resource):
 
                 user = user_ref.get().to_dict()
 
-                score += 1 * (user['correct'] / user['score'])
+                score += 1 * (user['correct'] / user['reviewed'])
 
             for username in application['no']:
                 user_ref = db.collection(
@@ -100,7 +127,7 @@ class ReviewByRecruiter(Resource):
 
                 user = user_ref.get().to_dict()
 
-                score -= 1 * (user['correct'] / user['score'])
+                score -= 1 * (user['correct'] / user['reviewed'])
 
             ret_application = application
             ret_application['score'] = score
@@ -129,7 +156,7 @@ class ReviewByRecruiter(Resource):
                 if data['decision'] == 'yes':
                     user['correct'] += 1
 
-                user['review'] += 1
+                user['reviewed'] += 1
                 user_ref.set(user)
 
             for username in application['no']:

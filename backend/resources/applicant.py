@@ -67,7 +67,10 @@ class ApplicantApplications(Resource):
 class ReviewByApplicant(Resource):
     _req_parser = reqparse.RequestParser()
     _req_parser.add_argument(
-        "decision", type=int
+        "app_id", type=str
+    )
+    _req_parser.add_argument(
+        "decision", type=str
     )
     _req_parser.add_argument(
         "previous_doc", type=dict
@@ -100,13 +103,15 @@ class ReviewByApplicant(Resource):
         try:
             doc_ref = db.collection(
                 collection_names["JOB_APPLICATIONS"]).document(data['app_id'])
-            new_value = doc_ref.to_dict()
+            new_value = doc_ref.get().to_dict()
             new_value["yes"].append(
-                get_jwt_identity) if data['decision'] else new_value["no"].append(get_jwt_identity)
+                get_jwt_identity()) if data['decision'] else new_value["no"].append(get_jwt_identity())
+            print(new_value)
             doc_ref.set(new_value)
             return {"message": "Successfully reviewed application"}, 200
 
         except:
+            traceback.print_exc()
             return {"message": "Failed to review application"}, 500
 
 

@@ -52,7 +52,6 @@ async function sendHTTP(method, path, data) {
   return response;
 }
 
-
 export default {
   initSocket,
   GET,
