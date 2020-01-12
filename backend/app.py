@@ -95,9 +95,9 @@ api.add_resource(TokenRefresh, "/refresh")
 api.add_resource(UserLogout, "/logout")
 
 # applicant endpoints
-api.add_resource(JobPostList, "/job_posts")
 api.add_resource(SubmitApplication, "/apply")
 api.add_resource(ApplicantApplications, "/myapplist")
+api.add_resource(JobPostList, "/jobposts/<string:industry>")
 api.add_resource(ReviewByApplicant, "/reviewapp")
 
 

@@ -37,7 +37,7 @@ class SubmitApplication(Resource):
             return {"message": "Error submitting application"}, 500
 
 
-# /my_application_list
+# /myapplist
 class ApplicantApplications(Resource):
     _req_parser = reqparse.RequestParser()
     _req_parser.add_argument(
@@ -57,13 +57,13 @@ class ApplicantApplications(Resource):
                 cursor = cursor.start_after(data["previous_doc"])
 
             cursor = cursor.limit(5).stream()
-            return {"applications": {application.id: application.to_dict() for application in cursor}}, 200
+            return {"applications": [dict(app_id=app.id, **app.to_dict()) for app in cursor]}, 200
 
         except:
             traceback.print_exc()
             return {"message": "Error fetching applications"}, 500
 
-
+# /reviewapp
 class ReviewByApplicant(Resource):
     _req_parser = reqparse.RequestParser()
     _req_parser.add_argument(
@@ -91,8 +91,9 @@ class ReviewByApplicant(Resource):
             job_applications = job_applications.limit(1).stream()
 
             # I assumed this takes care of null case
-            job_app = {app.id: app.to_dict() for app in job_applications}
+            job_app = {dict(app_id=app.id, **app.to_dict()) for app in job_applications}
             return {"application": job_app}, 200
+        
         except:
             return {"message": "Failed to get applications"}, 500
 
@@ -115,17 +116,19 @@ class ReviewByApplicant(Resource):
             return {"message": "Failed to review application"}, 500
 
 
-# /job_posts
+# /jobposts
 class JobPostList(Resource):
 
     @jwt_required
-    def get(self, job_type):
-        data = JobPostList._req_parser.parse_args()
-
+    def get(self, industry):
         try:
-            job_posts = db.collection(
-                collection_names["JOB_POSTS"]).where("job_type", "==", job_type).stream()
-            job_posts = {post.id for post in job_posts}
+            job_posts_query = db.collection(collection_names["JOB_POSTS"]).where("industry", "==", industry)
+
+            for i in job_posts_query.stream():
+                print(i.to_dict())
+
+            job_posts = [dict(post_id=post.id, **post.to_dict()) for post in job_posts_query.stream()]
+
 
             return {"posts": job_posts}, 200
 
