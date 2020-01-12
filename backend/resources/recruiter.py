@@ -9,24 +9,6 @@ from flask_jwt_extended import (
 
 from db import db, collection_names
 
-# /recruiterposts
-
-
-class RecruiterJobPostingList(Resource):
-    # get all job postings by recruiter
-    @jwt_required
-    def get(self):
-        try:
-            job_posts = db.collection(collection_names['JOB_POSTS']).where(
-                "poster_username", "==", get_jwt_identity()).stream()
-            return {"posts": {job_post.id: job_post.to_dict() for job_post in job_posts}}, 200
-        except:
-            traceback.print_exc()
-            return {"message": "Error fetching postings"}
-
-
-# /post
-
 
 class PostJob(Resource):
     _post_parser = reqparse.RequestParser()
@@ -41,6 +23,9 @@ class PostJob(Resource):
     )
     _post_parser.add_argument(
         "company_description", type=str, required=True
+    )
+    _post_parser .add_argument(
+        "industry", type=str, required=True
     )
 
     @jwt_required
@@ -59,7 +44,19 @@ class PostJob(Resource):
             return {"message": "Error submitting application"}, 500
 
 
-# /view_applicants
+class RecruiterJobPostingList(Resource):
+    # get all job postings by recruiter
+    @jwt_required
+    def get(self):
+        try:
+            job_posts = db.collection(collection_names['JOB_POSTS']).where(
+                "poster_username", "==", get_jwt_identity()).stream()
+            return {"posts": {job_post.id: job_post.to_dict() for job_post in job_posts}}, 200
+        except:
+            traceback.print_exc()
+            return {"message": "Error fetching postings"}
+
+
 class ApplicantList(Resource):
     # get applicants that applied to a post
     @jwt_required
@@ -85,9 +82,9 @@ class ReviewByRecruiter(Resource):
         try:
             application_ref = db.collection(
                 collection_names['JOB_APPLICATIONS']).document(app_id)
-            application = application_ref.get()
+            application = application_ref.get().to_dict()
 
-           score = 0
+            score = 0
 
             for username in application['yes']:
                 user_ref = db.collection(
@@ -105,7 +102,7 @@ class ReviewByRecruiter(Resource):
 
                 score -= 1 * (user['correct'] / user['score'])
 
-            ret_application = application.to_dict()
+            ret_application = application
             ret_application['score'] = score
             return ret_application, 200
         except:
