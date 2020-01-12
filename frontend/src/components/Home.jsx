@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Axios from "axios";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import {
@@ -72,14 +72,14 @@ function HomeTitle(props) {
 }
 
 function AppCard(props) {
-  const { number } = props;
+  const { data } = props;
 
   return (
     <Grid item xs={3}>
       <Card>
         <CardContent>
           <Typography variant="h5" component="h2">
-            Application #{number}
+            Application #{data}
           </Typography>
           <Typography variant="body2" component="p">
             Company
@@ -99,24 +99,30 @@ function AppCard(props) {
   );
 }
 
-function ApplicantContent(props) {
+function ApplicantContent() {
   const [apps, setApps] = useState(null);
 
-  Applicant.myAppList()
-    .then(response => {
-      console.log(response);
-    })
-    .catch(error => {
-      console.log(error);
-    });
+  function getApps() {
+    Applicant.myAppList()
+      .then(response => {
+        console.log(response);
+        const { applications } = response.data;
+        setApps(applications);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
+  useEffect(getApps, []);
 
   return (
     <div>
       {apps ? (
-        apps.count > 0 ? (
+        apps.length > 0 ? (
           <Grid container spacing={3}>
-            {apps.map((index, value) => (
-              <AppCard key={index} number={value} />
+            {apps.map((index, data) => (
+              <AppCard key={index} data={data} />
             ))}
           </Grid>
         ) : (
@@ -186,7 +192,7 @@ const Home = () => {
               <HomeContent>
                 <HomeTitle type={type} />
                 {type === "applicant" ? (
-                  <ApplicantContent email={email} />
+                  <ApplicantContent />
                 ) : (
                   <RecruiterContent email={email} />
                 )}

@@ -16,6 +16,11 @@ async function myAppList() {
   return await Socket.GET(myapplistEP);
 }
 
+async function jobPosts() {
+  return await Socket.GET(jobpostsEP);
+}
+
+
 async function getAppToReview() {
   return await Socket.GET(reviewappEP);
 }
@@ -32,6 +37,7 @@ async function reviewApp(decision, app_id) {
 export default {
   apply,
   myAppList,
+  jobPosts,
   getAppToReview,
   reviewApp
 };
