@@ -1,27 +1,26 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import Button from "@material-ui/core/Button";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
+import { FixedSizeList } from "react-window";
+import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
-import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
+import Box from "@material-ui/core/Box";
+import Link from "@material-ui/core/Link";
 
 const useStyles = makeStyles(theme => ({
-  card: {
-    minWidth: 275
+  root: {
+    width: "100%",
+    height: 400,
+    maxWidth: 300,
+    backgroundColor: theme.palette.background.paper
   },
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)"
-  },
-  title: {
-    fontSize: 14
-  },
-  pos: {
-    marginBottom: 12
+  paper: {
+    marginTop: theme.spacing(8),
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center"
   },
   login: {
     border: 1
@@ -32,54 +31,42 @@ const useStyles = makeStyles(theme => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2)
-  },
+  }
 }));
 
-function JobCard(props) {
-  const classes = useStyles();
-
-  const { number } = props;
+function RenderRow({data, index}) {
   return (
-    <Grid item xs={3}>
-      <Link href={"jobs/" + number} underline="none">
-        <Card className={classes.card}>
-          <CardContent>
-            <Typography variant="h5" component="h2">
-              Job Title Here
-            </Typography>
-            <Typography className={classes.pos} color="textSecondary">
-              Company Name Here
-            </Typography>
-            <Typography variant="body2" component="p">
-              DeadLine Date here
-            </Typography>
-          </CardContent>
-          <CardActions>
-            <Button size="small">Learn More</Button>
-          </CardActions>
-        </Card>
+    <ListItem button>
+      <Link href={`jobs/${index}`} underline="none">
+      <ListItemText primary={`Job Description ${data[index] + 1}`}/> 
       </Link>
-    </Grid>
+    </ListItem>
   );
 }
 
-function Jobs() {
-  const classes = useStyles();
+function Jobs(props) {
   const numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+  const count = numbers.length;
 
   return (
-    <div className={classes.root}>
-      <p></p>
-      <Typography component="h2" variant="h2">
-        Live Jobs
-      </Typography>
-      <p> </p>
-      <Grid container spacing={3}>
-        {numbers.map((index, value) => (
-          <JobCard key={index} number={value} />
-        ))}
+    <Container component="main" align="center">
+      <Grid container direction="column" alignItems="center">
+        <Typography component="h2" variant="h2">
+          Jobs Available:
+        </Typography>
+        <Box border={1}>
+          <FixedSizeList
+            height={400}
+            width={700}
+            itemSize={46}
+            itemCount={count}
+            itemData={numbers}
+          >
+            {RenderRow}
+          </FixedSizeList>
+        </Box>
       </Grid>
-    </div>
+    </Container>
   );
 }
 
