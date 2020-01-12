@@ -12,6 +12,7 @@ import {
 } from "@material-ui/core";
 
 import Idm from "../services/Idm";
+import Applicant from "../services/Applicant";
 import Recruiter from "../services/Recruiter";
 
 const HomeButtons = props => {
@@ -99,15 +100,32 @@ function AppCard(props) {
 }
 
 function ApplicantContent(props) {
-  const { email } = props;
+  const [apps, setApps] = useState(null);
 
-  const numbers = [0, 1, 2, 3, 4, 5];
+  Applicant.myAppList()
+    .then(response => {
+      console.log(response);
+    })
+    .catch(error => {
+      console.log(error);
+    });
+
   return (
-    <Grid container spacing={3}>
-      {numbers.map((index, value) => (
-        <AppCard key={index} number={value} />
-      ))}
-    </Grid>
+    <div>
+      {apps ? (
+        apps.count > 0 ? (
+          <Grid container spacing={3}>
+            {apps.map((index, value) => (
+              <AppCard key={index} number={value} />
+            ))}
+          </Grid>
+        ) : (
+          <Typography>No applications yet. Go apply!</Typography>
+        )
+      ) : (
+        <Typography>Loading...</Typography>
+      )}
+    </div>
   );
 }
 

@@ -15,7 +15,7 @@ function initSocket() {
   const { common } = Axios.defaults.headers;
 
   common["email"] = Cookies.get("email");
-  common["access_token"] = Cookies.get("access_token");
+  common["Authorization"] = Cookies.get("Authorization");
 
   Axios.defaults.baseURL = baseUrl;
 }
