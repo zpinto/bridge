@@ -34,7 +34,7 @@ export default function PeerResumeReview() {
     const classes = useStyles();
     const { pageNumber, numPages } = this.state;
     
-    return (
+    return (/*
       <Container component="main" fullWidth alignItems="left">
         <CssBaseline />
         <div className={classes.paper}>
@@ -47,6 +47,7 @@ export default function PeerResumeReview() {
             <p>Page {pageNumber} of {numPages}</p>
         </div>
       </Container>
-
+*/
+<h1>test</h1>
     );
   }
