@@ -12,6 +12,7 @@ import ApplicationPage from "./components/ApplicationPage";
 import Jobs from "./components/Jobs";
 import JobPage from "./components/JobPage";
 import Submission from "./components/Submission";
+import ResumeReview from "./components/ResumeReview";
 
 const Content = props => {
   const { loggedIn, handleLogin } = props;
@@ -30,6 +31,7 @@ const Content = props => {
         <Route exact path="/jobs" component={Jobs} />
         <Route exact path="/jobs/:id" component={JobPage} />
         <Route exact path="/submit" component={Submission} />
+        <Route exact path="/review" component={ResumeReview} />
         <Route>
           <h1> ERROR </h1>
         </Route>

@@ -71,17 +71,36 @@ function HomeTitle(props) {
 }
 
 function AppCard(props) {
-  const { index } = props;
+  const { index, data } = props;
+  const { job_post_id } = data;
+
+  const [post, setPost] = useState("");
+
+  useEffect(() => {
+    Applicant.jobPosts()
+      .then(response => {
+        console.log(response);
+        const { posts } = response.data;
+        const post = posts.filter(post => post.post_id === job_post_id)[0];
+
+        if (post) setPost(post);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }, [job_post_id]);
+
+  const { title, company_description } = post;
 
   return (
     <Grid item xs={5}>
       <Card>
         <CardContent>
           <Typography variant="h5" component="h2">
-            Application #{index}
+            {title}
           </Typography>
           <Typography variant="body2" component="p">
-            Company
+            {company_description}
           </Typography>
           <Typography variant="body2" component="p" align="left">
             Submission Status
