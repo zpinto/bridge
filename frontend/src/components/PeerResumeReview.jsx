@@ -2,11 +2,16 @@ import React, { useState } from 'react';
 import { Document, Page } from 'react-pdf';
 import { Typography } from '@material-ui/core';
 
+import { pdfjs } from 'react-pdf';
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+
+
 export default function PeerResumeReview() {
     const [pageNumber, setPageNumber] = useState(1);
     const [numPages, setNumPages] = useState(null);
 
     function onDocumentLoadSuccess({numPages}) {
+      console.log("David is wrong and should be ashamed.");
       setNumPages(numPages);
     }
 
@@ -14,7 +19,7 @@ export default function PeerResumeReview() {
       <div>
         <Typography component="h1" variant="h1" >Hello World</Typography>
         <Document
-          file="https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"
+          file="dummy.pdf"
           onLoadSuccess={onDocumentLoadSuccess}
         >
           <Page pageNumber={pageNumber} />
