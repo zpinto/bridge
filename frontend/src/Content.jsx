@@ -6,8 +6,14 @@ import Home from "./components/Home";
 import About from "./components/About";
 import Login from "./components/Login";
 import Register from "./components/Register";
-import JobDescriptionView from "./components/JobDecriptionView";
 import JobPosting from "./components/JobPosting";
+import JobDescriptionView from "./components/JobDecriptionView";
+import SubmitApplication from "./components/SubmitApplication";
+//import PeerResumeReview from "./components/PeerResumeReview";
+import AllApplicationView from "./components/AllApplicationView";
+import AllApplicants from "./components/AllApplicants";
+import JobPostings from "./components/JobPostings";
+
 
 const Content = props => {
   const { loggedIn, handleLogin } = props;
@@ -24,13 +30,15 @@ const Content = props => {
         </Route>
         <Route exact path="/register" component={Register} />
         <Route exact path="/about" component={About} />
-        <Route
-          exact
-          path="/JobDescriptionView"
-          component={JobDescriptionView}
-        />
-        <Route exact path="/testDK" component={JobPosting} />
-        <Route exact path="/portal">
+        <Route exact path="/JobPosting" component={JobPosting} />
+        <Route exact path="/JobDescriptionView" component={JobDescriptionView} />
+        <Route exact path="/JobPosting" component={JobPosting} />
+        <Route exact path="/SubmitApplication" component={SubmitApplication} />
+        {/* <Route exact path="/PeerResumeReview" component={PeerResumeReview} /> */}
+         <Route exact path="/AllApplicationView" component={AllApplicationView} /> 
+         <Route exact path="/AllApplicants" component={AllApplicants} />
+         <Route exact path="/JobPostings" component={JobPostings} />  
+         <Route exact path="/portal">
           <h1>Application Portal</h1>
           <h2>Applicant</h2>
         </Route>
