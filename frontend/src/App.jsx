@@ -10,7 +10,7 @@ import "./App.css";
 const App = () => {
   function checkLoggedIn() {
     return (
-      Cookies.get("email") !== undefined
+      Cookies.get("email") !== undefined && Cookies.get("type") !== undefined
       /*&&
       Cookies.get("access_token") !== undefined &&
       Cookies.get("refresh_token")
@@ -20,12 +20,14 @@ const App = () => {
 
   const [loggedIn, setLoggedIn] = useState(checkLoggedIn());
 
-  function handleLogin(email, password) {
+  function handleLogin(email, type) {
     const { common } = Axios.defaults.headers;
 
     Cookies.set("email", email);
+    Cookies.set("type", type);
 
     common["email"] = email;
+    common["type"] = type;
 
     setLoggedIn(true);
   }
@@ -34,8 +36,10 @@ const App = () => {
     const { common } = Axios.defaults.headers;
 
     Cookies.remove("email");
+    Cookies.remove("type");
 
     delete common["email"];
+    delete common["type"];
 
     setLoggedIn(false);
     window.location.replace("/");

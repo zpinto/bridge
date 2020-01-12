@@ -16,12 +16,20 @@ const Content = props => {
     <Router>
       <Switch>
         <Route strict exact path="/">
-          {loggedIn ? <Home loggedIn={loggedIn} /> : <Login handleLogin={handleLogin} />}
+          {loggedIn ? (
+            <Home />
+          ) : (
+            <Login handleLogin={handleLogin} />
+          )}
         </Route>
         <Route exact path="/register" component={Register} />
         <Route exact path="/about" component={About} />
-        <Route exact path="/JobDescriptionView" component={JobDescriptionView} />
-          <Route exact path="/testDK" component={JobPosting}/>
+        <Route
+          exact
+          path="/JobDescriptionView"
+          component={JobDescriptionView}
+        />
+        <Route exact path="/testDK" component={JobPosting} />
         <Route exact path="/portal">
           <h1>Application Portal</h1>
           <h2>Applicant</h2>
