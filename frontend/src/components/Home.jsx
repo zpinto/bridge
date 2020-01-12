@@ -20,13 +20,13 @@ const HomeButtons = props => {
   const isApp = type === "applicant";
 
   const button1 = {
-    href: isApp ? "/portal" : "/post",
+    href: isApp ? "/postings" : "/post",
     title: isApp ? "Apply" : "Post Job"
   };
 
   const button2 = {
-    href: isApp ? "/review" : "/reviewApps",
-    title: isApp ? "Review" : "Review Applicants"
+    href: isApp ? "/review" : "/jobs",
+    title: isApp ? "Review" : "Live Jobs"
   };
 
   return (
@@ -157,7 +157,7 @@ const Home = () => {
             justify="center"
           >
             <Grid item p={3}>
-              <Typography component="h1" variant="h3" p={3}>
+              <Typography component="h2" variant="h2">
                 Welcome, {first_name} {last_name}!
               </Typography>
             </Grid>
