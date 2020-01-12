@@ -1,6 +1,7 @@
 from flask import Flask, jsonify
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
+from flask_cors import CORS
 
 from blacklist import BLACKLIST
 from db import db
@@ -11,6 +12,7 @@ from resources.recruiter import PostJob, RecruiterJobPostingList, ApplicantList,
 
 # create the app instance
 app = Flask(__name__)
+CORS(app)
 
 app.config[
     "PROPAGATE_EXCEPTIONS"
