@@ -6,16 +6,12 @@ import Home from "./components/Home";
 import About from "./components/About";
 import Login from "./components/Login";
 import Register from "./components/Register";
-import JobPosting from "./components/JobPosting";
-import JobDescriptionView from "./components/JobDecriptionView";
-import SubmitApplication from "./components/SubmitApplication";
-import PeerResumeReview from "./components/PeerResumeReview";
-import AllApplicationView from "./components/AllApplicationView";
-import AllApplicants from "./components/AllApplicants";
-import JobPostings from "./components/JobPostings";
-import RecruiterResumeReview from "./components/RecruiterResumeReview";
-
-
+import Post from "./components/Post";
+import Applications from "./components/Applications";
+import ApplicationPage from "./components/ApplicationPage";
+import Jobs from "./components/Jobs";
+import JobPage from "./components/JobPage";
+import Submission from "./components/Submission";
 
 const Content = props => {
   const { loggedIn, handleLogin } = props;
@@ -24,40 +20,16 @@ const Content = props => {
     <Router>
       <Switch>
         <Route strict exact path="/">
-          {loggedIn ? (
-            <Home />
-          ) : (
-            <Login handleLogin={handleLogin} />
-          )}
+          {loggedIn ? <Home /> : <Login handleLogin={handleLogin} />}
         </Route>
         <Route exact path="/register" component={Register} />
         <Route exact path="/about" component={About} />
-        <Route exact path="/JobPosting" component={JobPosting} />
-        <Route exact path="/JobDescriptionView" component={JobDescriptionView} />
-        <Route exact path="/JobPosting" component={JobPosting} />
-        <Route exact path="/SubmitApplication" component={SubmitApplication} />
-        <Route exact path="/PeerResumeReview" component={PeerResumeReview} /> 
-         <Route exact path="/AllApplicationView" component={AllApplicationView} /> 
-         <Route exact path="/AllApplicants" component={AllApplicants} />
-         <Route exact path="/JobPostings" component={JobPostings} />  
-         <Route exact path="/RecruiterResumeReview" component={RecruiterResumeReview} /> 
-
-         <Route exact path="/portal">
-          <h1>Application Portal</h1>
-          <h2>Applicant</h2>
-        </Route>
-        <Route exact path="/review">
-          <h1>Review Portal</h1>
-          <h2>Applicant</h2>
-        </Route>
-        <Route exact path="/job/add">
-          <h1>Add Job Page</h1>
-          <h2>Recruiter</h2>
-        </Route>
-        <Route exact path="/job/:id">
-          <h1>Job Page</h1>
-          <h2>Recruiter</h2>
-        </Route>
+        <Route exact path="/post" component={Post} />
+        <Route exact path="/apps" component={Applications} />
+        <Route exact path="/apps/:id" component={ApplicationPage} />
+        <Route exact path="/jobs" component={Jobs} />
+        <Route exact path="/jobs/:id" component={JobPage} />
+        <Route exact path="/submit" component={Submission} />
         <Route>
           <h1> ERROR </h1>
         </Route>
