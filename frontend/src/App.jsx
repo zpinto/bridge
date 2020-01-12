@@ -11,7 +11,7 @@ const App = () => {
   function checkLoggedIn() {
     return (
       Cookies.get("email") !== undefined &&
-      Cookies.get("access_token") !== undefined &&
+      Cookies.get("Authorization") !== undefined &&
       Cookies.get("refresh_token") !== undefined
     );
   }
@@ -22,11 +22,11 @@ const App = () => {
     const { common } = Axios.defaults.headers;
 
     Cookies.set("email", email);
-    Cookies.set("access_token", access_token);
+    Cookies.set("Authorization", "Bearer " + access_token);
     Cookies.set("refresh_token", refresh_token);
 
     common["email"] = email;
-    common["access_token"] = access_token;
+    common["Authorization"] = "Bearer " + access_token;
     common["refresh_token"] = refresh_token;
 
     setLoggedIn(true);
@@ -36,11 +36,11 @@ const App = () => {
     const { common } = Axios.defaults.headers;
 
     Cookies.remove("email");
-    Cookies.remove("access_token");
+    Cookies.remove("Authorization");
     Cookies.remove("refresh_token");
 
     delete common["email"];
-    delete common["access_token"];
+    delete common["Authorization"];
     delete common["refresh_token"];
 
     setLoggedIn(false);
