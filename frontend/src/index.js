@@ -3,6 +3,9 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import Socket from "./util/Socket";
+
+Socket.initSocket();
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
