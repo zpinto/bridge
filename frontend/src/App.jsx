@@ -10,24 +10,24 @@ import "./App.css";
 const App = () => {
   function checkLoggedIn() {
     return (
-      Cookies.get("email") !== undefined && Cookies.get("type") !== undefined
-      /*&&
+      Cookies.get("email") !== undefined &&
       Cookies.get("access_token") !== undefined &&
-      Cookies.get("refresh_token")
-*/
+      Cookies.get("refresh_token") !== undefined
     );
   }
 
   const [loggedIn, setLoggedIn] = useState(checkLoggedIn());
 
-  function handleLogin(email, type) {
+  function handleLogin(email, access_token, refresh_token) {
     const { common } = Axios.defaults.headers;
 
     Cookies.set("email", email);
-    Cookies.set("type", type);
+    Cookies.set("access_token", access_token);
+    Cookies.set("refresh_token", refresh_token);
 
     common["email"] = email;
-    common["type"] = type;
+    common["access_token"] = access_token;
+    common["refresh_token"] = refresh_token;
 
     setLoggedIn(true);
   }
@@ -36,10 +36,12 @@ const App = () => {
     const { common } = Axios.defaults.headers;
 
     Cookies.remove("email");
-    Cookies.remove("type");
+    Cookies.remove("access_token");
+    Cookies.remove("refresh_token");
 
     delete common["email"];
-    delete common["type"];
+    delete common["access_token"];
+    delete common["refresh_token"];
 
     setLoggedIn(false);
     window.location.replace("/");

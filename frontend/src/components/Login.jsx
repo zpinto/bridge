@@ -7,7 +7,10 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import { Box } from "@material-ui/core";
+import Box from "@material-ui/core/Box";
+
+import Warning from "./Warning";
+import Idm from "../services/Idm";
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -33,12 +36,22 @@ const Login = props => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [warning, setWarning] = useState("");
 
   const { handleLogin } = props;
 
   function handleSubmit(e) {
     e.preventDefault();
-    handleLogin(email, password);
+    Idm.login(email, password)
+      .then(response => {
+        console.log(response);
+        const { access_token, refresh_token } = response.data;
+        handleLogin(email, access_token, refresh_token);
+      })
+      .catch(error => {
+        console.log(error);
+        setWarning("Invalid username or password.");
+      });
   }
 
   return (
@@ -57,11 +70,8 @@ const Login = props => {
           <Typography component="h1" variant="h5">
             Login
           </Typography>
-          <form
-            className={classes.form}
-            noValidate
-            onSubmit={handleSubmit}
-          >
+          {warning ? <Warning message={warning} /> : null}
+          <form className={classes.form} noValidate onSubmit={handleSubmit}>
             <TextField
               variant="outlined"
               margin="normal"

@@ -1,15 +1,8 @@
 {
-  "baseUrl": "http://127.0.0.1:3000",
-  "EPs": {
+  "baseUrl": "http://127.0.0.1:5000/",
+  "idmEPs": {
     "registerEP": "/register",
-    "userEP": "/user",
     "loginEP": "/login",
-    "refreshEP": "/refresh",
-    "logoutEP": "/logout",
-    "applyEP": "/apply",
-    "postEP": "/post",
-    "recruiterpostsEP": "/recruiterposts",
-    "applicantlistEP": "/applicantlist/",
-    "recruiterdecisionEP": "/recruiterdecision/"
+    "logoutEP": "/logout"
   }
 }

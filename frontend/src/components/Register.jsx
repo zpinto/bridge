@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
@@ -11,6 +11,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { Box } from "@material-ui/core";
+import Idm from "../services/Idm";
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -28,8 +29,26 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function SignUp() {
+const Register = () => {
   const classes = useStyles();
+
+  const [first_name, setFirstName] = useState("");
+  const [last_name, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [type, setType] = useState("applicant");
+
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    Idm.register(email, password, first_name, last_name, type)
+      .then(response => {
+        console.log(response);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
 
   return (
     <Container component="main" maxWidth="xs">
@@ -39,7 +58,7 @@ export default function SignUp() {
           <Typography component="h1" variant="h5">
             Register
           </Typography>
-          <form className={classes.form} noValidate>
+          <form className={classes.form} noValidate onSubmit={handleSubmit}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -51,6 +70,8 @@ export default function SignUp() {
                   id="firstName"
                   label="First Name"
                   autoFocus
+                  value={first_name}
+                  onChange={e => setFirstName(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -62,6 +83,8 @@ export default function SignUp() {
                   label="Last Name"
                   name="lastName"
                   autoComplete="lname"
+                  value={last_name}
+                  onChange={e => setLastName(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -73,6 +96,8 @@ export default function SignUp() {
                   label="Email Address"
                   name="email"
                   autoComplete="email"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -85,12 +110,28 @@ export default function SignUp() {
                   type="password"
                   id="password"
                   autoComplete="current-password"
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
-                <RadioGroup defaultValue="applicant" aria-label="user" name="user">
-                  <FormControlLabel value="applicant" control={<Radio />} label="Applicant" />
-                  <FormControlLabel value="recruiter" control={<Radio />} label="Recruiter" />
+                <RadioGroup
+                  defaultValue="applicant"
+                  aria-label="user"
+                  name="user"
+                  value={type}
+                  onChange={e => setType(e.target.value)}
+                >
+                  <FormControlLabel
+                    value="applicant"
+                    control={<Radio />}
+                    label="Applicant"
+                  />
+                  <FormControlLabel
+                    value="recruiter"
+                    control={<Radio />}
+                    label="Recruiter"
+                  />
                 </RadioGroup>
               </Grid>
             </Grid>
@@ -115,4 +156,6 @@ export default function SignUp() {
       </div>
     </Container>
   );
-}
+};
+
+export default Register;
