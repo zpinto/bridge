@@ -1,7 +1,7 @@
 import Socket from "../util/Socket";
 import { idmEPs } from "../Config.json";
 
-const { registerEP, loginEP, logoutEP } = idmEPs;
+const { registerEP, loginEP, logoutEP, userEP } = idmEPs;
 
 async function register(email, password, first_name, last_name, type) {
   const payload = {
@@ -28,8 +28,13 @@ async function logout() {
   return await Socket.POST(logoutEP, null);
 }
 
+async function user(username) {
+  return await Socket.Get(username);
+}
+
 export default {
   register,
   login,
-  logout
+  logout,
+  user
 };
