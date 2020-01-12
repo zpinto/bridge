@@ -10,7 +10,7 @@ import { pdfjs } from 'react-pdf';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 
-export default function PeerResumeReview() 
+export default function RecruiterResumeReview() 
 {
     const [pageNumber, setPageNumber] = useState(1);
     const [numPages, setNumPages] = useState(null);
@@ -22,7 +22,8 @@ export default function PeerResumeReview()
 
     return (
       <div >
-        <Typography component="h2" variant="h2" >Review Resume Below!</Typography>
+        <Typography component="h3" variant="h3" >Select whether or not you would like to continue with applicant?</Typography>
+        <p> </p>
         <Grid container spacing={3}container
   direction="row"
   justify="center"
@@ -41,29 +42,54 @@ export default function PeerResumeReview()
         </Grid>
         <Grid item xs={3}>
           <Card >
-            <Typography component="H2" Variant="h2">Postion Requirements</Typography>
-            <Typography>Insert Job listing credentials here</Typography>
+            <Typography component="H2" Variant="h2">Candidate Information</Typography>
+            <Typography>Name: John Doe</Typography>
+            <Typography>Phone: 1234567890 </Typography>
+            <Typography>Email: lol@lol.com </Typography>
           </Card>
         </Grid>
       </Grid>
-      <p></p>
+      <Grid container spacing={3}container
+            direction="row"
+            justify="center"
+            alignItems="center">
+        <Grid item xs={3}>
+          <Card >
         <Button
             type="submit"
             size="medium"
             variant="contained"
             color="green"   
         >
-            Ready!
+            Approve Candidate
         </Button>
-        <p> </p>
+        </Card>
+        </Grid>
+        <Grid item xs={3}>
+          <Card>
         <Button
             type="submit"
             size="medium"
             variant="contained"
             color="red"  
         >
-            Needs Work
+            Deny Candidate
         </Button>
+        </Card>
+        </Grid>
+        <Grid item xs={3}>
+          <Card>
+        <Button
+            type="submit"
+            size="medium"
+            variant="contained"
+            color="grey"  
+        >
+            Skip
+        </Button>
+        </Card>
+        </Grid>
+      </Grid>
         <p>Page {pageNumber} of {numPages}</p>
       </div>
     );

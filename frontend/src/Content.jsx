@@ -13,6 +13,8 @@ import PeerResumeReview from "./components/PeerResumeReview";
 import AllApplicationView from "./components/AllApplicationView";
 import AllApplicants from "./components/AllApplicants";
 import JobPostings from "./components/JobPostings";
+import RecruiterResumeReview from "./components/RecruiterResumeReview";
+
 
 
 const Content = props => {
@@ -38,6 +40,8 @@ const Content = props => {
          <Route exact path="/AllApplicationView" component={AllApplicationView} /> 
          <Route exact path="/AllApplicants" component={AllApplicants} />
          <Route exact path="/JobPostings" component={JobPostings} />  
+         <Route exact path="/RecruiterResumeReview" component={RecruiterResumeReview} /> 
+
          <Route exact path="/portal">
           <h1>Application Portal</h1>
           <h2>Applicant</h2>
