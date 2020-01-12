@@ -1,5 +1,7 @@
 import Socket from "../util/Socket";
-import { recruiterEPs } from "../Config.json";
+import {
+  recruiterEPs
+} from "../Config.json";
 
 const {
   postEP,
@@ -8,39 +10,34 @@ const {
   applicantlistEP
 } = recruiterEPs;
 
-/*
-async function apply(resume_id, job_post_id) {
+
+async function postJob(title, deadline, industry, job_description, company_description) {
   const payload = {
-    resume_id,
-    job_post_id
+    title,
+    deadline,
+    industry,
+    job_description,
+    company_description
   };
 
-  return await Socket.POST(applyEP, payload);
+  return await Socket.POST(postEP, payload);
 }
 
-async function myAppList() {
-  return await Socket.GET(myapplistEP);
+async function recruitersPosts() {
+  return await Socket.GET(recruiterpostsEP);
 }
 
-async function getAppToReview() {
-  return await Socket.GET(reviewEP);
+async function recruiterDecision(app_id, decision) {
+  return await Socket.POST(recruiterdecisionEP + app_id, decision);
 }
 
-async function reviewApp(decision, app_id) {
-  const payload = {
-    decision,
-    app_id
-  };
-
-  return await Socket.POST(reviewappEP, payload);
+async function applicantList(job_post_id) {
+  return await Socket.GET(applicantlistEP + job_post_id);
 }
 
 export default {
-  apply,
-  myAppList,
-  getAppToReview,
-  reviewApp
+  postJob,
+  recruitersPosts,
+  recruiterDecision,
+  applicantList
 };
-*/
-
-export default {};
