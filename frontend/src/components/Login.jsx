@@ -42,6 +42,7 @@ const Login = props => {
 
   function handleSubmit(e) {
     e.preventDefault();
+
     Idm.login(email, password)
       .then(response => {
         console.log(response);

@@ -69,7 +69,7 @@ function RecruiterContent(props) {
 
 const Home = () => {
   const { common } = Axios.defaults.headers;
-  const { email, type } = common;
+  const { email } = common;
 
   return (
     <Container>

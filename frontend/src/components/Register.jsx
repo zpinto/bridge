@@ -10,7 +10,9 @@ import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import { Box } from "@material-ui/core";
+import Box from "@material-ui/core/Box";
+
+import Warning from "./Warning";
 import Idm from "../services/Idm";
 
 const useStyles = makeStyles(theme => ({
@@ -37,6 +39,7 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [type, setType] = useState("applicant");
+  const [warning, setWarning] = useState("");
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -44,9 +47,11 @@ const Register = () => {
     Idm.register(email, password, first_name, last_name, type)
       .then(response => {
         console.log(response);
+        window.location.replace("/");
       })
       .catch(error => {
         console.log(error);
+        setWarning("Unable to register.");
       });
   }
 
@@ -58,6 +63,7 @@ const Register = () => {
           <Typography component="h1" variant="h5">
             Register
           </Typography>
+          {warning ? <Warning message={warning} /> : null}
           <form className={classes.form} noValidate onSubmit={handleSubmit}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
