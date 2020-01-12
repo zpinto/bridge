@@ -29,7 +29,7 @@ async function logout() {
 }
 
 async function user(username) {
-  return await Socket.Get(username);
+  return await Socket.GET(userEP + "/" + username);
 }
 
 export default {
