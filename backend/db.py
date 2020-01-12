@@ -5,8 +5,8 @@ collection_names = {"USERS": "users",
                     "JOB_POSTS": "job_posts", 
                     "JOB_APPLICATIONS": "job_applications"}
 
-def create(collection_name, id, data):
-    db.collection(collection_name).document(id).set(data)
+def create(collection_name, data):
+    db.collection(collection_name).document().set(data)
 
 def read(collection_name, id):
     return db.collection(collection_name).document(id).get()

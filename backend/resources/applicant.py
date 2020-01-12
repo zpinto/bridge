@@ -81,17 +81,20 @@ class ReviewByApplicant(Resource):
         data = ReviewByApplicant._req_parser.parse_args()
 
         try:
-            job_applications = db.collection(
+            job_app_collection = db.collection(
                 collection_names["JOB_APPLICATIONS"]).order_by("job_post_id")
 
+            for i in job_app_collection.stream():
+                print(i.to_dict())
+
             if data["previous_doc"]:
-                job_applications = job_applications.start_after(
+                job_app_collection = job_applications.start_after(
                     data["previous_doc"])
 
-            job_applications = job_applications.limit(1).stream()
+            job_app_stream = job_app_collection.limit(1).stream()
 
             # I assumed this takes care of null case
-            job_app = {dict(app_id=app.id, **app.to_dict()) for app in job_applications}
+            job_app = [dict(id=app.id, **app.to_dict()) for app in job_app_stream]
             return {"application": job_app}, 200
         
         except:
@@ -105,9 +108,11 @@ class ReviewByApplicant(Resource):
             doc_ref = db.collection(
                 collection_names["JOB_APPLICATIONS"]).document(data['app_id'])
             new_value = doc_ref.get().to_dict()
+            print(new_value)
+
             new_value["yes"].append(
                 get_jwt_identity()) if data['decision'] else new_value["no"].append(get_jwt_identity())
-            print(new_value)
+            
             doc_ref.set(new_value)
             return {"message": "Successfully reviewed application"}, 200
 
