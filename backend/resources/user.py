@@ -138,7 +138,10 @@ class UserLogin(Resource):
             traceback.print_exc()
             return {"message": "An error occurred trying to look up this user"}, 500
 
+        print(user)
+
         if user.exists:
+            print("2")
             user_dict = user.to_dict()
             if safe_str_cmp(user_dict["password"], data["password"]):
                 access_token = create_access_token(
@@ -146,6 +149,7 @@ class UserLogin(Resource):
                 )
                 refresh_token = create_refresh_token(user_dict['username'])
                 return {"access_token": access_token, "refresh_token": refresh_token}, 200
+
 
         return {"message": "Invalid Credentials!"}, 401
 

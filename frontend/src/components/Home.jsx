@@ -12,6 +12,7 @@ import {
 } from "@material-ui/core";
 
 import Idm from "../services/Idm";
+import Applicant from "../services/Applicant";
 import Recruiter from "../services/Recruiter";
 import Applicant from "../services/Applicant";
 
@@ -100,7 +101,15 @@ function AppCard(props) {
 }
 
 function ApplicantContent(props) {
-  const { email } = props;
+  const [apps, setApps] = useState(null);
+
+  Applicant.myAppList()
+    .then(response => {
+      console.log(response);
+    })
+    .catch(error => {
+      console.log(error);
+    });
 
   const [apps, setApps] = useState(null);
   console.log("RAMBO");
