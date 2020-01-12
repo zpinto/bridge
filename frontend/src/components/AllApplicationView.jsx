@@ -43,7 +43,7 @@ const useStyles = makeStyles(theme => ({
   paper: {
     padding: theme.spacing(2),
     textAlign: 'center',
-    color: theme.palette.text.secondary,
+    color: theme.palette.text.secondary
   }
 }));
 
@@ -54,6 +54,9 @@ export default function AllApplicationView() {
   return (
 
     <div className={classes.root}>
+      <p></p>
+      <Typography component="h2" variant="h2">Applications you have posted!</Typography>
+      <p>  </p>
       <Grid container spacing={3}>
         <Grid item xs={3}>
           <Card className={classes.card}>
@@ -74,23 +77,130 @@ export default function AllApplicationView() {
           </Card>
         </Grid>
         <Grid item xs={3}>
-          <Paper className={classes.paper}>xs=6</Paper>
+        <Card className={classes.card}>
+            <CardContent>
+              <Typography variant="h5" component="h2">
+                Job Title Here
+        </Typography>
+              <Typography className={classes.pos} color="textSecondary">
+                Company Name Here
+        </Typography>
+              <Typography variant="body2" component="p">
+                DeadLine Date here
+        </Typography>
+            </CardContent>
+            <CardActions>
+              <Button size="small">Learn More</Button>
+            </CardActions>
+          </Card>
         </Grid>
-
         <Grid item xs={3}>
-          <Paper className={classes.paper}>xs=6</Paper>
+        <Card className={classes.card}>
+            <CardContent>
+              <Typography variant="h5" component="h2">
+                Job Title Here
+        </Typography>
+              <Typography className={classes.pos} color="textSecondary">
+                Company Name Here
+        </Typography>
+              <Typography variant="body2" component="p">
+                DeadLine Date here
+        </Typography>
+            </CardContent>
+            <CardActions>
+              <Button size="small">Learn More</Button>
+            </CardActions>
+          </Card>
         </Grid>
         <Grid item xs={3}>
-          <Paper className={classes.paper}>xs=3</Paper>
+        <Card className={classes.card}>
+            <CardContent>
+              <Typography variant="h5" component="h2">
+                Job Title Here
+        </Typography>
+              <Typography className={classes.pos} color="textSecondary">
+                Company Name Here
+        </Typography>
+              <Typography variant="body2" component="p">
+                DeadLine Date here
+        </Typography>
+            </CardContent>
+            <CardActions>
+              <Button size="small">Learn More</Button>
+            </CardActions>
+          </Card>
         </Grid>
         <Grid item xs={3}>
-          <Paper className={classes.paper}>xs=3</Paper>
+        <Card className={classes.card}>
+            <CardContent>
+              <Typography variant="h5" component="h2">
+                Job Title Here
+        </Typography>
+              <Typography className={classes.pos} color="textSecondary">
+                Company Name Here
+        </Typography>
+              <Typography variant="body2" component="p">
+                DeadLine Date here
+        </Typography>
+            </CardContent>
+            <CardActions>
+              <Button size="small">Learn More</Button>
+            </CardActions>
+          </Card>
         </Grid>
         <Grid item xs={3}>
-          <Paper className={classes.paper}>xs=3</Paper>
+        <Card className={classes.card}>
+            <CardContent>
+              <Typography variant="h5" component="h2">
+                Job Title Here
+        </Typography>
+              <Typography className={classes.pos} color="textSecondary">
+                Company Name Here
+        </Typography>
+              <Typography variant="body2" component="p">
+                DeadLine Date here
+        </Typography>
+            </CardContent>
+            <CardActions>
+              <Button size="small">Learn More</Button>
+            </CardActions>
+          </Card>
         </Grid>
         <Grid item xs={3}>
-          <Paper className={classes.paper}>xs=3</Paper>
+        <Card className={classes.card}>
+            <CardContent>
+              <Typography variant="h5" component="h2">
+                Job Title Here
+        </Typography>
+              <Typography className={classes.pos} color="textSecondary">
+                Company Name Here
+        </Typography>
+              <Typography variant="body2" component="p">
+                DeadLine Date here
+        </Typography>
+            </CardContent>
+            <CardActions>
+              <Button size="small">Learn More</Button>
+            </CardActions>
+          </Card>
+        </Grid>
+        <Grid item xs={3}>
+        <Card className={classes.card}>
+            <CardContent>
+              <Typography variant="h5" component="h2">
+                Job Title Here
+        </Typography>
+              <Typography className={classes.pos} color="textSecondary">
+                Company Name Here
+        </Typography>
+              <Typography variant="body2" component="p">
+                DeadLine Date here
+        </Typography>
+            </CardContent>
+            <CardActions>
+              <Button size="small">Learn More</Button>
+            </CardActions>
+          </Card>
         </Grid>
       </Grid>
     </div>
