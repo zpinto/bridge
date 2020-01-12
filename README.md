@@ -11,9 +11,11 @@ Link: https://learn-flask-restful.herokuapp.com/
 - [UserLogout](#UserLogout)
 - [SubmitApplication](#SubmitApplication)
 - [ApplicantApplications](#ApplicantApplications)
+- [JobPostList](#JobPostList)
 - [PostJob](#PostJob)
 - [RecruiterJobPostingList](#RecruiterJobPostingList)
 - [ApplicantList](#ApplicantList)
+- [ReviewByApplicant](#ReviewByApplicant)
 - [ReviewByRecruiter](#ReviewByRecruiter)
 
 ### UserRegister
@@ -157,7 +159,7 @@ BODY:
 
 RETURN:
 
-"applications":             : Dict of dicts
+"applications":             : List of dicts
 ```
 
 ### ApplicantApplications
@@ -177,8 +179,27 @@ BODY:
 
 RETURN:
 
-"applications":             : Dict of dicts
+"applications":             : List of dicts
 ```
+
+### JobPosts
+
+**GET /jobposts**
+
+List of all job postings
+
+```
+HEADERS:
+
+"Authorization":            : String # required, access_token
+
+BODY:
+
+RETURN:
+
+"posts":                    : List of dicts
+```
+
 
 ### PostJob
 
@@ -237,6 +258,45 @@ RETURN:
 
 "posts":                    : Dict of dict
 ```
+
+### ReviewByApplicant
+
+**GET /reviewapp**
+
+```
+HEADERS:
+
+"Authorization":            : String # required, access_token
+
+BODY:
+
+"app_id":                   : String # optional 
+"decision":                 : String # optional
+"previous_doc":             : String # optional
+
+RETURN:
+
+"message":                  : String, Application received successfully?
+```
+
+**POST /reviewapp**
+
+```
+HEADERS:
+
+"Authorization":            : String # required, access_token
+
+BODY:
+
+"app_id":                   : String # required
+"decision":                 : String # optional
+"previous_doc":             : String # optional
+
+RETURN:
+
+"message":                  : String, Reviewed application successfully?
+```
+
 
 ### ReviewByRecruiter
 
