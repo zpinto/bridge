@@ -27,7 +27,8 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(3, 0, 2)
   }
 }));
-export default function SubmitApplication() {
+
+function Submission() {
     const classes = useStyles();
   return (
     <Container component="main" fullWidth>
@@ -61,3 +62,5 @@ export default function SubmitApplication() {
     </Container>
   );
 };
+
+export default function Submission();

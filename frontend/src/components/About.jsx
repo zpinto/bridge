@@ -2,16 +2,17 @@ import React from "react";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
+import Link from "@material-ui/core/Link";
 
 const About = () => {
   return (
     <Container>
       <CssBaseline />
-      <Typography component="h1" variant="h3">
+      <Typography component="h2" variant="h2">
         Welcome to Bridge!
       </Typography>
       <p></p>
-      <Typography component="h2" variant="h5" align="center" padd>
+      <Typography component="h2" variant="h5" align="center">
         Bridge is a peer review based job application portal made for both
         applicants and recruiters!
       </Typography>
@@ -35,21 +36,46 @@ const About = () => {
         screeners and allows for human review for all applicants!
       </Typography>
       <p></p>
+
       <Typography component="h1" variant="h3">
         Meet the Team!
       </Typography>
-      <Typography component="h1" variant="h5">
+      <Link
+        component="h1"
+        variant="h5"
+        target="_blank"
+        rel="noopener"
+        to="https://github.com/jp-nguyen"
+      >
         JP Nguyen
-      </Typography>
-      <Typography component="h1" variant="h5">
+      </Link>
+      <Link
+        component="h1"
+        variant="h5"
+        target="_blank"
+        rel="noopener"
+        to="https://github.com/bluecard7"
+      >
         Paul Yang
-      </Typography>
-      <Typography component="h1" variant="h5">
-        Zack Pinto
-      </Typography>
-      <Typography component="h1" variant="h5">
+      </Link>
+      <Link
+        component="h1"
+        variant="h5"
+        target="_blank"
+        rel="noopener"
+        to="https://github.com/zpinto"
+      >
+        Zach Pinto
+      </Link>
+      <Link
+        component="h1"
+        variant="h5"
+        target="_blank"
+        rel="noopener"
+        to="https://github.com/kalamd"
+      >
         Daania Kalam
-      </Typography>
+      </Link>
     </Container>
   );
 };
