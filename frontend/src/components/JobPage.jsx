@@ -1,9 +1,11 @@
-import React from "react";
-import { useParams } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useParams } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+
+import Applicant from "../services/Applicant";
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -26,32 +28,58 @@ const useStyles = makeStyles(theme => ({
 
 function JobPage() {
   const classes = useStyles();
-
   let { id } = useParams();
+
+  const [post, setPost] = useState("");
+
+  useEffect(() => {
+    Applicant.jobPosts()
+      .then(response => {
+        console.log(response);
+        const { posts } = response.data;
+        const post = posts.filter(post => post.post_id === id)[0];
+
+        if (post) setPost(post);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }, [id]);
+
+  const {
+    title,
+    job_description,
+    company_description,
+    job_type
+  } = post;
 
   return (
     <Container component="main">
       <div className={classes.paper}>
-        <Typography component="h1" variant="h1">
-          Insert Job Title Here! {id}
+        <Typography component="h2" variant="h2">
+          {title} ({job_type})
         </Typography>
         <p></p>
         <Typography variant="body1" gutterBottom>
-          INSERT JOB DESCRIPTION HERE. Lorem ipsum dolor sit amet, consectetur
-          adipisicing elit. Quos blanditiis tenetur unde suscipit, quam beatae
-          rerum inventore consectetur, neque doloribus, cupiditate numquam
-          dignissimos laborum fugiat deleniti? Eum quasi quidem quibusdam.
+          COMPANY DESCRIPTION: {company_description}
         </Typography>
         <p></p>
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          color="primary"
-          className={classes.submit}
+        <Typography variant="body1" gutterBottom>
+          JOB DESCRIPTION: {job_description}
+        </Typography>
+        <p></p>
+        <Link
+          to={{
+            pathname: "/submit",
+            state: {
+              title: title,
+              job_post_id: id
+            }
+          }}
+          underline="none"
         >
-          Apply!
-        </Button>
+          <Button variant="contained" color="inherit">Apply</Button>
+        </Link>
       </div>
     </Container>
   );

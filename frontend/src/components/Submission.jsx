@@ -5,6 +5,8 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 
+import Applicant from "../services/Applicant";
+
 const useStyles = makeStyles(theme => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -24,14 +26,28 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function Submission() {
+function Submission(props) {
   const classes = useStyles();
+
+  const { title, job_post_id } = props.location.state;
+
+  function handleSubmit() {
+    Applicant.apply(1, job_post_id)
+      .then(response => {
+        console.log(response);
+        window.location.replace("/");
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
   return (
-    <Container component="main" fullWidth>
+    <Container component="main">
       <CssBaseline />
       <div className={classes.paper}>
         <Typography component="h1" variant="h2">
-          Attach Resume below to submit application!
+          Attach Resume below to submit for {title}!
         </Typography>
         <p></p>
         <Button variant="contained" component="label">
@@ -41,10 +57,10 @@ function Submission() {
         <p></p>
         <Button
           type="submit"
-          fullWidth
           variant="contained"
           color="primary"
           className={classes.submit}
+          onClick={handleSubmit}
         >
           Submit Application
         </Button>

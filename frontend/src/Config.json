@@ -10,7 +10,7 @@
   "applicantEPs": {
     "applyEP": "/apply",
     "myapplistEP": "/myapplist",
-    "jobpostsEP": "/jobposts",
+    "jobpostsEP": "/jobposts/tech",
     "reviewappEP": "/reviewapp"
   },
   "recruiterEPs": {

@@ -7,14 +7,12 @@ import {
   Button,
   Typography,
   Card,
-  CardContent,
-  CardActions
+  CardContent
 } from "@material-ui/core";
 
 import Idm from "../services/Idm";
 import Applicant from "../services/Applicant";
 import Recruiter from "../services/Recruiter";
-import Applicant from "../services/Applicant";
 
 const HomeButtons = props => {
   const { type } = props;
@@ -73,14 +71,14 @@ function HomeTitle(props) {
 }
 
 function AppCard(props) {
-  const { data } = props;
+  const { index } = props;
 
   return (
-    <Grid item xs={3}>
+    <Grid item xs={5}>
       <Card>
         <CardContent>
           <Typography variant="h5" component="h2">
-            Application #{data}
+            Application #{index}
           </Typography>
           <Typography variant="body2" component="p">
             Company
@@ -89,12 +87,9 @@ function AppCard(props) {
             Submission Status
           </Typography>
           <Typography variant="body2" component="p" align="left">
-            Review Status
+            Under Review
           </Typography>
         </CardContent>
-        <CardActions>
-          <Button size="small">Learn More</Button>
-        </CardActions>
       </Card>
     </Grid>
   );
@@ -122,8 +117,8 @@ function ApplicantContent() {
       {apps ? (
         apps.length > 0 ? (
           <Grid container spacing={3}>
-            {apps.map((index, data) => (
-              <AppCard key={index} data={data} />
+            {apps.map((data, index) => (
+              <AppCard key={index} index={index} data={data} />
             ))}
           </Grid>
         ) : (
