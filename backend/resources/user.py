@@ -39,20 +39,33 @@ class UserRegister(Resource):
         "password", type=str, required=True, help="This field cannot be blank."
     )
     _user_parser.add_argument(
+        "first_name", type=str, required=True, help="This field cannot be blank."
+    )
+    _user_parser.add_argument(
+        "last_name", type=str, required=True, help="This field cannot be blank."
+    )
+    _user_parser.add_argument(
         "user_type", type=str, required=True, help="This field cannot be blank."
     )
 
     def post(self):
         data = UserRegister._user_parser.parse_args()
 
+        if not len(data['username']):
+            return {"message": "The username has an invalid length"}, 400
+
         try:
             user = db.collection(
                 collection_names['USERS']).document(data['username']).get()
         except:
+            traceback.print_exc()
             return {"message": "An error occurred looking up the user"}, 500
 
         if user.exists:
             return {"message": "A user with that username already exists"}, 400
+
+        if not len(data['password']):
+            return {"message": "The password has an invalid length"}, 400
 
         try:
             db.collection(collection_names['USERS']).document(
@@ -67,6 +80,7 @@ class UserRegister(Resource):
                 })
             return {"message": "User created successfully."}, 201
         except:
+            traceback.print_exc()
             return {"message": "An error occurred creating the user"}, 500
 
 
@@ -126,7 +140,7 @@ class UserLogin(Resource):
 
         if user.exists:
             user_dict = user.to_dict()
-            if safe_str_cmp(user_dict["password"], user_dict["password"]):
+            if safe_str_cmp(user_dict["password"], data["password"]):
                 access_token = create_access_token(
                     identity=user_dict['username'], fresh=True
                 )

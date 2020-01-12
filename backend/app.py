@@ -98,10 +98,7 @@ api.add_resource(UserLogout, "/logout")
 api.add_resource(JobPostList, "/job_posts")
 api.add_resource(SubmitApplication, "/apply")
 api.add_resource(ApplicantApplications, "/myapplist")
-api.add_resource(ReviewByApplicant, "/get_app")
-api.add_resource(ReviewByApplicant, "/review_app")
-# api.add_resource()
-# api.add_resource()
+api.add_resource(ReviewByApplicant, "/reviewapp")
 
 
 # recruiter endpoints

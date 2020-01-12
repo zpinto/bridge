@@ -9,9 +9,35 @@ from flask_jwt_extended import (
 
 from db import db, collection_names
 
+
+# /apply
+class SubmitApplication(Resource):
+    _app_parser = reqparse.RequestParser()
+    _app_parser.add_argument(
+        "resume_id", type=str, required=True
+    )
+    _app_parser.add_argument(
+        "job_post_id", type=str, required=True
+    )
+
+    @jwt_required
+    def post(self):
+        data = SubmitApplication._app_parser.parse_args()
+        data['applicant_username'] = get_jwt_identity()
+        data['yes'] = []
+        data['no'] = []
+
+        try:
+            job_app = db.collection(
+                collection_names["JOB_APPLICATIONS"]
+            ).document()
+            job_app.set(data)
+            return {"message": "Application submitted successfully!"}, 201
+        except:
+            return {"message": "Error submitting application"}, 500
+
+
 # /my_application_list
-
-
 class ApplicantApplications(Resource):
     _req_parser = reqparse.RequestParser()
     _req_parser.add_argument(
@@ -31,7 +57,7 @@ class ApplicantApplications(Resource):
                 cursor = cursor.start_after(data["previous_doc"])
 
             cursor = cursor.limit(5).stream()
-            return {"applications": {application.id for application in cursor}}, 200
+            return {"applications": {application.id: application.to_dict() for application in cursor}}, 200
 
         except:
             traceback.print_exc()
@@ -40,9 +66,6 @@ class ApplicantApplications(Resource):
 
 class ReviewByApplicant(Resource):
     _req_parser = reqparse.RequestParser()
-    _req_parser.add_argument(
-        "app_id", type=str
-    )
     _req_parser.add_argument(
         "decision", type=int
     )
@@ -56,7 +79,7 @@ class ReviewByApplicant(Resource):
 
         try:
             job_applications = db.collection(
-                collection_names["JOB_APPLICATIONS"]).order_by("job_id")
+                collection_names["JOB_APPLICATIONS"]).order_by("job_post_id")
 
             if data["previous_doc"]:
                 job_applications = job_applications.start_after(
@@ -65,9 +88,8 @@ class ReviewByApplicant(Resource):
             job_applications = job_applications.limit(1).stream()
 
             # I assumed this takes care of null case
-            job_app = {app.id for app in job_applications}
+            job_app = {app.id: app.to_dict() for app in job_applications}
             return {"application": job_app}, 200
-
         except:
             return {"message": "Failed to get applications"}, 500
 
@@ -104,30 +126,3 @@ class JobPostList(Resource):
 
         except:
             return {"message": "There was an error looking up the job list"}
-
-
-# /apply
-class SubmitApplication(Resource):
-    _app_parser=reqparse.RequestParser()
-    _app_parser.add_argument(
-        "resume_id", type = str, required = True
-    )
-    _app_parser.add_argument(
-        "job_post_id", type = str, required = True
-    )
-
-    @jwt_required
-    def post(self):
-        data=SubmitApplication._app_parser.parse_args()
-        data['applicant_username']=get_jwt_identity()
-        data['yes']=[]
-        data['no']=[]
-
-        try:
-            job_app=db.collection(
-                collection_names["JOB_APPLICATIONS"]
-            ).document()
-            job_app.set(data)
-            return {"message": "Application submitted successfully!"}, 201
-        except:
-            return {"message": "Error submitting application"}, 500
