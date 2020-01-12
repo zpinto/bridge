@@ -3,6 +3,19 @@
   "idmEPs": {
     "registerEP": "/register",
     "loginEP": "/login",
-    "logoutEP": "/logout"
+    "logoutEP": "/logout",
+    "refreshEP": "/refresh",
+    "userEP": "/user"
+  },
+  "applicantEPs": {
+    "applyEP": "/apply",
+    "myapplistEP": "/myapplist",
+    "reviewappEP": "/reviewapp"
+  },
+  "recruiterEPs": {
+    "postEP": "/post",
+    "recruiterpostsEP": "/recruiterposts",
+    "recruiterdecisionEP": "/recruiterdecisions",
+    "applicantlistEP": "/applicantlist"
   }
 }
