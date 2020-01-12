@@ -70,7 +70,7 @@ class ReviewByApplicant(Resource):
         "app_id", type=str
     )
     _req_parser.add_argument(
-        "decision", type=str
+        "decision", type=int
     )
     _req_parser.add_argument(
         "previous_doc", type=dict
@@ -84,11 +84,8 @@ class ReviewByApplicant(Resource):
             job_app_collection = db.collection(
                 collection_names["JOB_APPLICATIONS"]).order_by("job_post_id")
 
-            for i in job_app_collection.stream():
-                print(i.to_dict())
-
             if data["previous_doc"]:
-                job_app_collection = job_applications.start_after(
+                job_app_collection = job_app_collection.start_after(
                     data["previous_doc"])
 
             job_app_stream = job_app_collection.limit(1).stream()
@@ -114,6 +111,8 @@ class ReviewByApplicant(Resource):
                 get_jwt_identity()) if data['decision'] else new_value["no"].append(get_jwt_identity())
             
             doc_ref.set(new_value)
+
+            print(doc_ref.get().to_dict())
             return {"message": "Successfully reviewed application"}, 200
 
         except:
@@ -125,12 +124,9 @@ class ReviewByApplicant(Resource):
 class JobPostList(Resource):
 
     @jwt_required
-    def get(self, industry):
+    def get(self, job_type):
         try:
-            job_posts_query = db.collection(collection_names["JOB_POSTS"]).where("industry", "==", industry)
-
-            for i in job_posts_query.stream():
-                print(i.to_dict())
+            job_posts_query = db.collection(collection_names["JOB_POSTS"]).where("job_type", "==", job_type)
 
             job_posts = [dict(post_id=post.id, **post.to_dict()) for post in job_posts_query.stream()]
 
