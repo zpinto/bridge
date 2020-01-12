@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
@@ -7,20 +7,29 @@ import About from "./components/About";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import JobDescriptionView from "./components/JobDecriptionView";
+import JobPosting from "./components/JobPosting";
 
 const Content = props => {
-  const { user, handleLogin } = props;
+  const { loggedIn, handleLogin } = props;
 
   return (
     <Router>
       <Switch>
         <Route strict exact path="/">
-          {user ? <Home user={user} /> : <Login handleLogin={handleLogin} />}
+          {loggedIn ? (
+            <Home />
+          ) : (
+            <Login handleLogin={handleLogin} />
+          )}
         </Route>
         <Route exact path="/register" component={Register} />
         <Route exact path="/about" component={About} />
-        <Route exact path="/JobDescriptionView" component={JobDescriptionView} />
-          <Route exact path="/testDK" component={JobPosting}/>
+        <Route
+          exact
+          path="/JobDescriptionView"
+          component={JobDescriptionView}
+        />
+        <Route exact path="/testDK" component={JobPosting} />
         <Route exact path="/portal">
           <h1>Application Portal</h1>
           <h2>Applicant</h2>
