@@ -20,13 +20,13 @@ const HomeButtons = props => {
   const isApp = type === "applicant";
 
   const button1 = {
-    href: isApp ? "/postings" : "/post",
+    href: isApp ? "/jobs" : "/post",
     title: isApp ? "Apply" : "Post Job"
   };
 
   const button2 = {
-    href: isApp ? "/review" : "/jobs",
-    title: isApp ? "Review" : "Live Jobs"
+    href: isApp ? "/review" : "/apps",
+    title: isApp ? "Review" : "Applications"
   };
 
   return (
